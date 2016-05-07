@@ -2,7 +2,6 @@ package debe.nukkitplugin.notesongapi.sound;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.TreeSet;
 
 public class SoundTable<T extends BaseSound>{
 	protected LinkedHashMap<Integer, ArrayList<T>> soundTable = new LinkedHashMap<Integer, ArrayList<T>>(){};
@@ -53,14 +52,13 @@ public class SoundTable<T extends BaseSound>{
 	}
 
 	public int getLength(){
-		return ((TreeSet<Integer>) this.getSoundTable().keySet()).last();
-		/*
-		 * for(int tick : this.soundTable.keySet()){
-		 * if(this.existSounds(tick) && length < tick){
-		 * length = tick;
-		 * }
-		 * }
-		 * return Integer.valueOf(length);
-		 */
+		// return ((TreeSet<Integer>) this.getSoundTable().keySet()).last();
+		int length = 0;
+		for(int tick : this.soundTable.keySet()){
+			if(this.existSounds(tick) && length < tick){
+				length = tick;
+			}
+		}
+		return Integer.valueOf(length);
 	}
 }
