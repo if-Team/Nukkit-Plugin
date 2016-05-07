@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>debe.nukkitplugin</groupId>
+	<artifactId>simpleserversong</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>SimpleServerSong</name>
+	<description>Play server song by using the NoteSongAPI</description>
+	<url>https://github.com/if-Team/Nukkit-Plugins/SimpleServerSong</url>
+
+	<repositories>
+		<repository>
+			<id>mengcraft</id>
+			<url>http://ci.mengcraft.com:8080/plugin/repository/everything/</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>cn.nukkit</groupId>
+			<artifactId>nukkit</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>debe.nukkitplugin</groupId>
+			<artifactId>notesongapi</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.name}-${project.version}</finalName>
+		<defaultGoal>clean install</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
