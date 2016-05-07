@@ -48,6 +48,4 @@ public class SimpleServerSong extends PluginBase{
 			e.printStackTrace();
 		}
 	}
-
-	public void onRun(int currentTick){}
 }
