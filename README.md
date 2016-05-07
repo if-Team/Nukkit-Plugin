@@ -1,4 +1,4 @@
-# Nukkit-Plugin
+# Nukkit-Plugins
 
 ![Logo](http://i.imgur.com/lR2AHL7.png)
 
