@@ -1,7 +1,7 @@
 {
 	"NoteSongAPI": {
 		"link": "https://github.com/if-Team/Nukkit-Plugins/raw/master/NoteSongAPI/SNAPSHOT/NoteSongAPI-1.0.0-SNAPSHOT.jar",
-		"version": "1.0.0",
+		"version": "1.0.1",
 		"author": "DeBe"
 	},
 	"ShowInfo": {
@@ -11,7 +11,7 @@
 	},
 	"SimpleServerSong": {
 		"link": "https://github.com/if-Team/Nukkit-Plugins/raw/master/SimpleServerSong/SNAPSHOT/SimpleServerSong-1.0.0-SNAPSHOT.jar",
-		"version": "1.0.0",
+		"version": "1.0.1",
 		"author": "DeBe"
 	},
 	"SkinStealer": {
