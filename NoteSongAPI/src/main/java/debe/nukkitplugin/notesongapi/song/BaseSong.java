@@ -14,17 +14,17 @@ public class BaseSong<T extends BaseSound>{
 	protected SoundTable<T> soundTable;
 
 	public BaseSong(String name){
-		this(name, new SoundTable<T>(){});
+		this(name, new SoundTable<T>());
 	}
 
 	public BaseSong(String name, SoundTable<T> soundTable){
-		this.id = NoteSongAPI.registerSong(this);
+		this.id = NoteSongAPI.getInstance().registerSong(this);
 		this.name = name;
 		this.soundTable = soundTable;
 	}
 
 	public BaseSong(String name, String author, String description, SoundTable<T> soundTable){
-		this.id = NoteSongAPI.registerSong(this);
+		this.id = NoteSongAPI.getInstance().registerSong(this);
 		this.name = name;
 		this.author = author;
 		this.description = description;
@@ -52,14 +52,14 @@ public class BaseSong<T extends BaseSound>{
 	}
 
 	public ArrayList<T> getSounds(int tick){
-		return this.existSounds(tick) ? this.soundTable.getSoundTable().get(tick) : new ArrayList<T>(){};
+		return this.soundTable.getSoundTable().get(tick);
 	}
 
-	public Boolean existSounds(int tick){
+	public boolean existSounds(int tick){
 		return this.soundTable.getSoundTable().containsKey(tick) && !this.soundTable.getSoundTable().get(tick).isEmpty();
 	}
 
-	public Integer getLength(){
+	public int getLength(){
 		return this.soundTable.getLength();
 	}
 }

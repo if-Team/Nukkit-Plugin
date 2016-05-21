@@ -8,9 +8,10 @@ import java.io.InputStream;
 import debe.nukkitplugin.notesongapi.song.NoteSong;
 import debe.nukkitplugin.notesongapi.sound.NoteSound;
 import debe.nukkitplugin.notesongapi.sound.SoundTable;
+import debe.nukkitplugin.notesongapi.utils.BinaryStream;
 
 public class NBSDecoder extends BaseDecoder<NoteSound, NoteSong>{
-	public NBSDecoder(File file) throws IOException, FileNotFoundException{
+	public NBSDecoder(File file) throws FileNotFoundException, IOException{
 		super(file);
 	}
 
@@ -20,6 +21,33 @@ public class NBSDecoder extends BaseDecoder<NoteSound, NoteSong>{
 
 	public NBSDecoder(BinaryStream binaryStream){
 		super(binaryStream);
+	}
+
+	public static NoteSong getSong(File file){
+		try{
+			return new NBSDecoder(file).getSong();
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static NoteSong getSong(InputStream inputStream){
+		try{
+			return new NBSDecoder(inputStream).getSong();
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static NoteSong getSong(BinaryStream binaryStream){
+		try{
+			return new NBSDecoder(binaryStream).getSong();
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -42,7 +70,7 @@ public class NBSDecoder extends BaseDecoder<NoteSound, NoteSong>{
 		bs.getInt(); // Integer: Blocks removed
 		bs.getString(); // String: MIDI/Schematic file name
 		/* Part #2: Note blocks */
-		SoundTable<NoteSound> soundTable = new SoundTable<NoteSound>(){};
+		SoundTable<NoteSound> soundTable = new SoundTable<NoteSound>();
 		Integer tick = -1, jumpLayers;
 		Byte instrument, pitch;
 		while(true){
@@ -78,5 +106,5 @@ public class NBSDecoder extends BaseDecoder<NoteSound, NoteSong>{
 			}
 		}
 		return new NoteSong(name, author, description, tempo, height, name, originalAuthor, soundTable);
-	};
+	}
 }

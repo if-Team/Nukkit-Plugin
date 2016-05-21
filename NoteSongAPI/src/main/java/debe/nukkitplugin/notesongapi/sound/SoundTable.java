@@ -1,64 +1,71 @@
 package debe.nukkitplugin.notesongapi.sound;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SoundTable<T extends BaseSound>{
-	protected LinkedHashMap<Integer, ArrayList<T>> soundTable = new LinkedHashMap<Integer, ArrayList<T>>(){};
+	protected Map<Integer, ArrayList<T>> soundTable = new HashMap<Integer, ArrayList<T>>();
+	protected int length = 0;
 
 	public SoundTable(){}
 
-	public SoundTable(LinkedHashMap<Integer, ArrayList<T>> soundTable){
-		this.soundTable = soundTable;
-	}
-
 	public SoundTable(SoundTable<T> soundTable){
-		this.soundTable = soundTable.getSoundTable();
+		this.setSoundTable(soundTable);
 	}
 
-	public LinkedHashMap<Integer, ArrayList<T>> getSoundTable(){
-		return new LinkedHashMap<Integer, ArrayList<T>>(this.soundTable);
+	public SoundTable(Map<Integer, ArrayList<T>> soundTable){
+		this.setSoundTable(soundTable);
 	}
 
-	public void setSoundTable(LinkedHashMap<Integer, ArrayList<T>> soundTable){
+	public Map<Integer, ArrayList<T>> getSoundTable(){
+		return new HashMap<Integer, ArrayList<T>>(this.soundTable);
+	}
+
+	public void setSoundTable(SoundTable<T> soundTable){
+		this.setSoundTable(soundTable.getSoundTable());
+	}
+
+	public void setSoundTable(Map<Integer, ArrayList<T>> soundTable){
 		this.soundTable = soundTable;
+		this.length = this.soundTable.keySet().stream().mapToInt(Integer::intValue).max().getAsInt();
 	}
 
 	public ArrayList<T> getSounds(int tick){
-		return this.existSounds(tick) ? new ArrayList<T>(this.soundTable.get(tick)) : new ArrayList<T>(){};
+		return new ArrayList<T>(this.soundTable.get(tick));
 	}
 
 	public void setSounds(int tick, ArrayList<T> sounds){
-		this.soundTable.put(tick, sounds);
+		if(!sounds.isEmpty()){
+			this.soundTable.put(tick, sounds);
+			if(this.length < tick){
+				this.length = tick;
+			}
+		}
 	}
 
-	public Boolean existSounds(int tick){
+	public boolean existSounds(int tick){
 		return this.soundTable.containsKey(tick) && !this.soundTable.get(tick).isEmpty();
 	}
 
 	public void addSound(int tick, T sound){
-		ArrayList<T> sounds = this.existSounds(tick) ? this.soundTable.get(tick) : new ArrayList<T>(){};
-		Boolean isExists = false;
-		for(T oldSound : sounds){
-			if(oldSound.equals(sound)){
-				isExists = true;
-				break;
+		ArrayList<T> sounds = this.soundTable.get(tick);
+		if(sounds == null){
+			this.soundTable.put(tick, new ArrayList<T>(){
+				{
+					add(sound);
+				}
+			});
+			if(this.length < tick){
+				this.length = tick;
 			}
-		}
-		if(!isExists){
+		}else if(sounds.stream().noneMatch(oldSound->oldSound.equals(sound))){
 			sounds.add(sound);
 			this.soundTable.put(tick, sounds);
 		}
 	}
 
 	public int getLength(){
-		// return ((TreeSet<Integer>) this.getSoundTable().keySet()).last();
-		int length = 0;
-		for(int tick : this.soundTable.keySet()){
-			if(this.existSounds(tick) && length < tick){
-				length = tick;
-			}
-		}
-		return Integer.valueOf(length);
+		return this.length;
 	}
 }

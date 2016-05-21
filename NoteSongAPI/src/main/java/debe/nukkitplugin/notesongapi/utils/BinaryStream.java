@@ -1,4 +1,4 @@
-package debe.nukkitplugin.notesongapi.decoder;
+package debe.nukkitplugin.notesongapi.utils;
 
 import java.io.DataInputStream;
 import java.io.File;
