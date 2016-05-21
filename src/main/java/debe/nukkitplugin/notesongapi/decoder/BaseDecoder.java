@@ -9,6 +9,7 @@ import java.io.InputStream;
 import debe.nukkitplugin.notesongapi.song.BaseSong;
 import debe.nukkitplugin.notesongapi.sound.BaseSound;
 import debe.nukkitplugin.notesongapi.sound.SoundTable;
+import debe.nukkitplugin.notesongapi.utils.BinaryStream;
 
 abstract public class BaseDecoder<T extends BaseSound, S extends BaseSong<T>>{
 	protected BinaryStream binaryStrem;

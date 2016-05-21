@@ -10,7 +10,7 @@ public class NoteSong extends BaseSong<NoteSound>{
 	protected short tempo = 0;
 
 	public NoteSong(String name){
-		super(name, new SoundTable<NoteSound>(){});
+		super(name, new SoundTable<NoteSound>());
 	}
 
 	public NoteSong(String name, SoundTable<NoteSound> soundTable){

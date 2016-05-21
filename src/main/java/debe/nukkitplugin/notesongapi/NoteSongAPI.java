@@ -1,7 +1,10 @@
 package debe.nukkitplugin.notesongapi;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import cn.nukkit.Player;
 import cn.nukkit.plugin.PluginBase;
@@ -10,71 +13,69 @@ import debe.nukkitplugin.notesongapi.song.BaseSong;
 
 public class NoteSongAPI extends PluginBase{
 	private static NoteSongAPI instance;
-	public static int playerCount = 0;
-	private static LinkedHashMap<Integer, BasePlayer<?, ?>> players = new LinkedHashMap<Integer, BasePlayer<?, ?>>(){};
-	public static int songCount = 0;
-	private static LinkedHashMap<Integer, BaseSong<?>> songs = new LinkedHashMap<Integer, BaseSong<?>>(){};
+	private int playerCount = 0;
+	private int songCount = 0;
+	private Map<Integer, BasePlayer<?, ?>> players = new HashMap<Integer, BasePlayer<?, ?>>();
+	private Map<Integer, BaseSong<?>> songs = new HashMap<Integer, BaseSong<?>>();
 
 	public final static NoteSongAPI getInstance(){
 		return NoteSongAPI.instance;
 	}
 
-	public final static BasePlayer<?, ?>[] getPlayers(){
-		return NoteSongAPI.players.values().stream().toArray(BasePlayer[]::new);
-	}
-
-	public final static BasePlayer<?, ?> getPlayer(int playerId){
-		return NoteSongAPI.players.get(playerId);
-	}
-
-	public final static BasePlayer<?, ?>[] getPlayers(Player recipient){
-		ArrayList<BasePlayer<?, ?>> players = new ArrayList<BasePlayer<?, ?>>();
-		for(BasePlayer<?, ?> player : NoteSongAPI.getPlayers()){
-			if(player.existsRecipient(recipient)){
-				players.add(player);
-			}
-		}
-		return players.stream().toArray(BasePlayer[]::new);
-	}
-
-	public final static BasePlayer<?, ?>[] getPlayers(BaseSong<?> song){
-		ArrayList<BasePlayer<?, ?>> players = new ArrayList<BasePlayer<?, ?>>();
-		for(BasePlayer<?, ?> player : NoteSongAPI.getPlayers()){
-			if(player.existsSong(song)){
-				players.add(player);
-			}
-		}
-		return players.stream().toArray(BasePlayer[]::new);
-	}
-
-	public final static Boolean isPlayerId(int playerId){
-		return NoteSongAPI.players.containsKey(playerId);
-	}
-
-	public final static int registerPlayer(BasePlayer<?, ?> player){
-		NoteSongAPI.players.put(NoteSongAPI.playerCount, player);
-		return NoteSongAPI.playerCount++;
-	}
-
-	public final static BaseSong<?>[] getSongs(){
-		return NoteSongAPI.songs.values().stream().toArray(BaseSong[]::new);
-	}
-
-	public final static BaseSong<?> getSong(int songId){
-		return NoteSongAPI.songs.get(songId);
-	}
-
-	public final static Boolean isSongId(int songId){
-		return NoteSongAPI.songs.containsKey(songId);
-	}
-
-	public final static int registerSong(BaseSong<?> song){
-		NoteSongAPI.songs.put(NoteSongAPI.songCount, song);
-		return NoteSongAPI.songCount++;
-	}
-
 	@Override
 	public void onLoad(){
 		NoteSongAPI.instance = this;
+	}
+
+	public ArrayList<BasePlayer<?, ?>> getPlayers(){
+		return new ArrayList<BasePlayer<?, ?>>(this.players.values());
+	}
+
+	public BasePlayer<?, ?> getPlayer(int playerId){
+		return this.players.get(playerId);
+	}
+
+	public List<BasePlayer<?, ?>> getPlayers(Player recipient){
+		return this.players.values().stream().filter(player->player.existsRecipient(recipient)).collect(Collectors.toList());
+	}
+
+	public List<BasePlayer<?, ?>> getPlayers(BaseSong<?> song){
+		return this.players.values().stream().filter(player->player.existsSong(song)).collect(Collectors.toList());
+	}
+
+	public boolean playerExists(int playerId){
+		return this.players.containsKey(playerId);
+	}
+
+	public int registerPlayer(BasePlayer<?, ?> player){
+		int playerId = this.getNewPlayerId();
+		this.players.put(playerId, player);
+		return playerId;
+	}
+
+	public int getNewPlayerId(){
+		return ++this.playerCount;
+	}
+
+	public ArrayList<BaseSong<?>> getSongs(){
+		return new ArrayList<BaseSong<?>>(this.songs.values());
+	}
+
+	public BaseSong<?> getSong(int songId){
+		return this.songs.get(songId);
+	}
+
+	public boolean songExists(int songId){
+		return this.songs.containsKey(songId);
+	}
+
+	public int registerSong(BaseSong<?> song){
+		int songId = this.getNewSongId();
+		this.songs.put(songId, song);
+		return songId;
+	}
+
+	public int getNewSongId(){
+		return ++this.songCount;
 	}
 }
