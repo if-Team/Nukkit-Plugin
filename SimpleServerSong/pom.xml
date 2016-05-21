@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>debe.nukkitplugin</groupId>
 	<artifactId>simpleserversong</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>SimpleServerSong</name>
 	<description>Play server song by using the NoteSongAPI</description>
 	<url>https://github.com/if-Team/Nukkit-Plugins/SimpleServerSong</url>
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>debe.nukkitplugin</groupId>
 			<artifactId>notesongapi</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
