@@ -7,7 +7,6 @@ public class NoteSong extends BaseSong<NoteSound>{
 	protected short height = 0;
 	protected String originalName = "";
 	protected String originalAuthor = "";
-	protected short tempo = 0;
 
 	public NoteSong(String name){
 		super(name, new SoundTable<NoteSound>());
@@ -17,10 +16,17 @@ public class NoteSong extends BaseSong<NoteSound>{
 		super(name, soundTable);
 	}
 
-	public NoteSong(String name, String author, String description, short tempo, short height, String originalName, String originalAuthor, SoundTable<NoteSound> soundTable){
+	public NoteSong(String name, String author, String description, SoundTable<NoteSound> soundTable){
 		super(name, author, description, soundTable);
+	}
+
+	public NoteSong(String name, String author, String description, short tempo, SoundTable<NoteSound> soundTable){
+		super(name, author, description, tempo, soundTable);
+	}
+
+	public NoteSong(String name, String author, String description, short tempo, short height, String originalName, String originalAuthor, SoundTable<NoteSound> soundTable){
+		super(name, author, description, tempo, soundTable);
 		this.height = height;
-		this.tempo = tempo;
 		this.originalName = originalName;
 		this.originalAuthor = originalAuthor;
 	}
@@ -63,13 +69,5 @@ public class NoteSong extends BaseSong<NoteSound>{
 
 	public void setDescription(String description){
 		this.description = description;
-	}
-
-	public short getTempo(){
-		return this.tempo;
-	}
-
-	public void setTempo(short tempo){
-		this.tempo = tempo;
 	}
 }
