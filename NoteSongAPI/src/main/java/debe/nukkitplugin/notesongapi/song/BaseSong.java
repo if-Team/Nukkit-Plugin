@@ -11,6 +11,7 @@ public class BaseSong<T extends BaseSound>{
 	protected String name;
 	protected String author = "";
 	protected String description = "";
+	protected short tempo = 1000; // Play 10 note in 1 second
 	protected SoundTable<T> soundTable;
 
 	public BaseSong(String name){
@@ -24,11 +25,14 @@ public class BaseSong<T extends BaseSound>{
 	}
 
 	public BaseSong(String name, String author, String description, SoundTable<T> soundTable){
-		this.id = NoteSongAPI.getInstance().registerSong(this);
-		this.name = name;
+		this(name, soundTable);
 		this.author = author;
 		this.description = description;
-		this.soundTable = soundTable;
+	}
+
+	public BaseSong(String name, String author, String description, short tempo, SoundTable<T> soundTable){
+		this(name, author, description, soundTable);
+		this.tempo = tempo;
 	}
 
 	public String getName(){
@@ -57,6 +61,14 @@ public class BaseSong<T extends BaseSound>{
 
 	public boolean existSounds(int tick){
 		return this.soundTable.getSoundTable().containsKey(tick) && !this.soundTable.getSoundTable().get(tick).isEmpty();
+	}
+
+	public float getTempo(){
+		return this.tempo;
+	}
+
+	public void setTempo(short tempo){
+		this.tempo = tempo;
 	}
 
 	public int getLength(){

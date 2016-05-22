@@ -54,12 +54,12 @@ public class NBSDecoder extends BaseDecoder<NoteSound, NoteSong>{
 	public NoteSong getSong() throws IOException{
 		BinaryStream bs = this.getBinaryStream();
 		bs.getShort();// Short: Song length
-		Short height = bs.getShort(); // Short: Song height
+		short height = bs.getShort(); // Short: Song height
 		String name = bs.getString(); // String: Song name
 		String author = bs.getString(); // String: Song author
 		String originalAuthor = bs.getString(); // String: Original song author
 		String description = bs.getString(); // String: Song description
-		Short tempo = bs.getShort(); // Short: Tempo
+		short tempo = bs.getShort(); // Short: Tempo
 		bs.getBoolean(); // Byte: Auto-saving
 		bs.getByte(); // Byte: Auto-saving duration
 		bs.getByte(); // Byte: Time signature
@@ -71,8 +71,8 @@ public class NBSDecoder extends BaseDecoder<NoteSound, NoteSong>{
 		bs.getString(); // String: MIDI/Schematic file name
 		/* Part #2: Note blocks */
 		SoundTable<NoteSound> soundTable = new SoundTable<NoteSound>();
-		Integer tick = -1, jumpLayers;
-		Byte instrument, pitch;
+		int tick = -1, jumpLayers;
+		byte instrument, pitch;
 		while(true){
 			short jumpTicks = bs.getShort(); // jumps till next tick
 			if(jumpTicks == 0){

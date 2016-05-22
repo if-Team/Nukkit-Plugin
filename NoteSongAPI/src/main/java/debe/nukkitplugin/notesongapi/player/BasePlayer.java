@@ -6,16 +6,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.plugin.Plugin;
-import cn.nukkit.scheduler.TaskHandler;
 import debe.nukkitplugin.notesongapi.NoteSongAPI;
 import debe.nukkitplugin.notesongapi.song.BaseSong;
 import debe.nukkitplugin.notesongapi.sound.BaseSound;
-import debe.nukkitplugin.notesongapi.task.SongPlayerTask;
+import debe.nukkitplugin.notesongapi.task.SongTimerTask;
 
 abstract public class BasePlayer<T extends BaseSong<S>, S extends BaseSound>{
 	private int id;
@@ -27,7 +26,8 @@ abstract public class BasePlayer<T extends BaseSong<S>, S extends BaseSound>{
 	protected int tick = 0;
 	protected boolean loop = false;
 	protected boolean shuffle = false;
-	protected TaskHandler task;
+	protected Timer timer = new Timer();
+	protected SongTimerTask timerTask;
 
 	public BasePlayer(ArrayList<T> songs){
 		this(songs, new ArrayList<Player>(), false, false, 0);
@@ -56,18 +56,22 @@ abstract public class BasePlayer<T extends BaseSong<S>, S extends BaseSound>{
 	}
 
 	public void play(){
-		this.play(2);
+		this.play(this.getSpeed());
 	}
 
-	public void play(int period){
+	public void play(short period){
 		if(!this.isPlaying()){
-			this.task = Server.getInstance().getScheduler().scheduleRepeatingTask(new SongPlayerTask<BasePlayer<T, S>>(this, this.getPlugin()), period);
+			if(this.timerTask == null){
+				this.timerTask = new SongTimerTask(this.getPlugin(), this);
+				this.timer.schedule(this.timerTask, period, period);
+			}
 		}
 	}
 
 	public void pause(){
 		if(this.isPlaying()){
-			Server.getInstance().getScheduler().cancelTask(this.task.getTaskId());
+			this.timerTask.cancel();
+			this.timerTask = null;
 		}
 	}
 
@@ -75,13 +79,20 @@ abstract public class BasePlayer<T extends BaseSong<S>, S extends BaseSound>{
 		this.pause();
 		this.tick = 0;
 		this.songId = -1;
+		this.timerTask.cancel();
+		this.timerTask = null;
+	}
+
+	public short getSpeed(){
+		T playingSong = this.getPlayingSong();
+		return playingSong != null ? (short) (100000 / playingSong.getTempo()) : 100;
 	}
 
 	public boolean isPlaying(){
-		return this.task != null && !this.task.isCancelled();
+		return this.timerTask != null;
 	}
 
-	public void onRun(int currentTick){
+	public void onRun(){
 		T song = this.getPlayingSong();
 		if(song != null){
 			if(this.tick > song.getLength() + this.getDelay()){
@@ -100,6 +111,8 @@ abstract public class BasePlayer<T extends BaseSong<S>, S extends BaseSound>{
 			}
 		}else{
 			this.songId = song.getId();
+			this.timerTask = new SongTimerTask(this.getPlugin(), this);
+			this.play(this.getSpeed());;
 			this.removeWaitingList(song);
 		}
 	}
@@ -143,7 +156,7 @@ abstract public class BasePlayer<T extends BaseSong<S>, S extends BaseSound>{
 		this.delay = delay;
 	}
 
-	public int getTick(){
+	public float getTick(){
 		return this.tick;
 	}
 
