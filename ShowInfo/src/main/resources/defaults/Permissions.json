@@ -1,0 +1,13 @@
+{
+  "showinfo.command.showinfo": "TRUE",
+  "showinfo.command.showinfo.on": "TRUE",
+  "showinfo.command.showinfo.off": "TRUE",
+  "showinfo.command.showinfo.start": "OP",
+  "showinfo.command.showinfo.stop": "OP",
+  "showinfo.command.showinfo.push": "OP",
+  "showinfo.command.showinfo.tick": "OP",
+  "showinfo.command.showinfo.oprank": "OP",
+  "showinfo.command.showinfo.reload": "OP",
+  "showinfo.command.showinfo.save": "OP",
+  "showinfo.command.showinfo.reset": "FALSE"
+}

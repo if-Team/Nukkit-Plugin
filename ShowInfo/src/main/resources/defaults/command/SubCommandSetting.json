@@ -1,0 +1,11 @@
+{
+  "on": "On",
+  "off": "Off",
+  "start": "Start",
+  "stop": "Stop",
+  "push": "Push",
+  "tick": "Tick",
+  "reload": "Reload",
+  "save": "Save",
+  "reset": "Reset"
+}

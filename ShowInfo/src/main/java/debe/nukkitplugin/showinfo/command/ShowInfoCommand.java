@@ -1,23 +1,30 @@
 package debe.nukkitplugin.showinfo.command;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.event.TranslationContainer;
-import cn.nukkit.utils.TextFormat;
 import debe.nukkitplugin.showinfo.ShowInfo;
+import debe.nukkitplugin.showinfo.command.subcommand.PlayerSubCommand;
+import debe.nukkitplugin.showinfo.command.subcommand.SubCommand;
+import debe.nukkitplugin.showinfo.utils.Translation;
 
 public class ShowInfoCommand extends Command{
-	private ShowInfo plugin;
-	private String[] subs = new String[]{"On", "Off", "Start", "Stop", "Push", "Tick", "OpRank", "Reload", "Save", "Reset"};
+	private LinkedHashMap<String, SubCommand> subCommands = new LinkedHashMap<String, SubCommand>();
 
-	public ShowInfoCommand(ShowInfo plugin){
-		super("showinfo", "Comamnd of ShowInfo", "/ShowInfo <On | Off | Start | Stop | Push | Tick| OpRank | Reload | Save | Reset>");
+	public ShowInfoCommand(String name, String[] aliases, Map<String, String> subCommands){
+		super(name);
 		this.setPermission("showinfo.command.showinfo");
-		this.setAliases(new String[]{"si", "info"});
-		this.plugin = plugin;
+		this.setAliases(aliases);
+		this.registerSubCommands(subCommands);
+		this.description = this.getUsage();
+		this.usageMessage = this.getUsage();
 	}
 
 	@Override
@@ -25,130 +32,129 @@ public class ShowInfoCommand extends Command{
 		if(!this.testPermission(sender)){
 			return true;
 		}else if(args.length == 0){
-			sender.sendMessage(new TranslationContainer("commands.generic.usage", this.getUsage(sender)));
+			sender.sendMessage(Translation.translate("commands.generic.usage", this.getUsage(sender)));
 			return true;
 		}else{
-			Boolean checkedPermission = false;
-			for(String sub : this.subs){
-				if(sub.equalsIgnoreCase(args[0])){
-					if(!sender.hasPermission("showinfo.command.showinfo." + sub.toLowerCase())){
-						sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.permission"));
-						return true;
-					}else{
-						checkedPermission = true;
-						break;
-					}
-				}
-			}
-			if(!checkedPermission){
-				sender.sendMessage(new TranslationContainer("commands.generic.usage", this.getUsage(sender)));
-				return true;
-			}
-			switch(args[0].toLowerCase()){
-				case "on":
-					if(!(sender instanceof Player)){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] Please use this command only in the game.");
-					}else if(!this.plugin.getOffPlayersConfig().exists(sender.getName(), true)){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] Information already displayed");
-					}else{
-						this.plugin.getOffPlayersConfig().remove(sender.getName().toLowerCase());
-						sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Now information is displayed.");
-					}
-					break;
-				case "off":
-					if(!(sender instanceof Player)){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] Please use this command only in the game.");
-					}else if(this.plugin.getOffPlayersConfig().exists(sender.getName(), true)){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] Information already not displayed");
-					}else{
-						this.plugin.getOffPlayersConfig().set(sender.getName().toLowerCase(), true);
-						sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Now information is not displayed.");
-					}
-					break;
-				case "start":
-					if(!this.plugin.isTaskStop()){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] Information is already displayed");
-					}else{
-						this.plugin.getSettingConfig().set("Enable", true);
-						this.plugin.taskStart();
-						sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Now information is displayed to players");
-					}
-					break;
-				case "stop":
-					if(this.plugin.isTaskStop()){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] Already information is not displayed.");
-					}else{
-						this.plugin.getSettingConfig().set("Enable", false);
-						this.plugin.taskStop();
-						sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Now information is not displayed to players");
-					}
-					break;
-				case "push":
-					if(args.length <= 1 || args[1].equals("")){
-						sender.sendMessage(new TranslationContainer("commands.generic.usage", "/ShowInfo Push <PushLevel>"));
-					}else if(!Pattern.matches("(^-[0-9]*$)|(^[0-9]+$)", args[1])){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] " + args[1] + " is invalid number.");
-					}else{
-						this.plugin.getSettingConfig().set("PushLevel", Integer.parseInt(args[1]));
-						sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Push level is set to " + args[1] + " Level.");
-					}
-					break;
-				case "tick":
-					if(args.length <= 1 || args[1].equals("")){
-						sender.sendMessage(new TranslationContainer("commands.generic.usage", "/ShowInfo Tick <Tick>"));
-					}else if(!Pattern.matches("(^[1-9][0-9]*$)|(^[1-9]+$)", args[1])){
-						sender.sendMessage(TextFormat.RED + "[ShowInfo] " + args[1] + " is invalid number.");
-					}else{
-						this.plugin.getSettingConfig().set("Tick", Integer.parseInt(args[1]));
-						this.plugin.setTaskPeriod(Integer.parseInt(args[1]));
-						sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Show delay is set to " + args[1] + " Ticks." + TextFormat.DARK_AQUA + "  (1Second = 20Tick)");
-					}
-					break;
-				case "oprank":
-					Boolean isOpInRank = this.plugin.getSettingConfig().getBoolean("OpInRank");
-					this.plugin.getSettingConfig().set("OpInRank", !isOpInRank);
-					sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Now op is " + (isOpInRank ? "not" : "") + " including rank.");
-					break;
-				case "reload":
-					this.plugin.loadData();
-					sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Reloaded ShowInfo data.");
-					break;
-				case "save":
-					this.plugin.saveData();
-					sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Saved ShowInfo data.");
-					break;
-				case "reset":
-					this.plugin.saveDefaultData(true);
-					this.plugin.loadData();
-					sender.sendMessage(TextFormat.AQUA + "[ShowInfo] Reseted ShowInfo data.");
-					if(this.plugin.isTaskStop()){
-						this.plugin.getLogger().info("[ShowInfo] ShowInfo is running!");
-					}else{
-						this.plugin.taskStop();
-					}
-					this.plugin.taskStart();
-					break;
-				default:
-					sender.sendMessage(new TranslationContainer("commands.generic.usage", this.getUsage(sender)));
-					break;
+			SubCommand subCommand = this.getSubCommand(args[0]);
+			if(subCommand == null){
+				sender.sendMessage(Translation.translate("commands.generic.notFound", this.getUsage(sender)));
+			}else if(!subCommand.hasPermission(sender)){
+				sender.sendMessage(Translation.translate("commands.generic.permission"));
+			}else{
+				subCommand.run(sender, Arrays.copyOfRange(args, 1, args.length));
 			}
 		}
 		return true;
 	}
 
+	@Override
+	public String getUsage(){
+		return "/" + this.getLabel() + " <" + String.join(" | ", this.subCommands.values().stream().map(SubCommand::getName).collect(Collectors.toList())) + ">";
+	}
+
 	public String getUsage(CommandSender sender){
-		StringBuilder usageBuilder = new StringBuilder("/ShowInfo <");
-		Boolean hasUsage = false;
-		for(String sub : this.subs){
-			if(sender.hasPermission("showinfo.command.showinfo." + sub.toLowerCase())){
-				if(hasUsage){
-					usageBuilder.append(" | ").append(sub);
+		return "/" + this.getLabel() + " <" + String.join(" | ", this.subCommands.values().stream().filter(subCommand->subCommand.hasPermission(sender)).map(SubCommand::getName).collect(Collectors.toList())) + ">";
+	}
+
+	public void registerSubCommands(Map<String, String> subCommands){
+		this.registerSubCommand(new PlayerSubCommand(this, subCommands.getOrDefault("on", "On"), "showinfo.command.showinfo.on"){
+			public void execute(CommandSender sender, String[] args){
+				if(ShowInfo.getInstance().getData().containsKey((sender.getName()))){
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.on.failed"));
 				}else{
-					hasUsage = true;
-					usageBuilder.append(sub);
+					ShowInfo.getInstance().getData().remove(sender.getName().toLowerCase());
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.on.success"));
 				}
 			}
-		}
-		return usageBuilder.append(">").toString();
+		});
+		this.registerSubCommand(new PlayerSubCommand(this, subCommands.getOrDefault("off", "Off"), "showinfo.command.showinfo.off"){
+			public void execute(CommandSender sender, String[] args){
+				if(!ShowInfo.getInstance().getData().containsKey(sender.getName())){
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.off.failed"));
+				}else{
+					ShowInfo.getInstance().getData().put(sender.getName().toLowerCase(), true);
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.off.success"));
+				}
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("start", "Start"), "showinfo.command.showinfo.start"){
+			public void execute(CommandSender sender, String[] args){
+				if(!ShowInfo.getInstance().isTaskStop()){
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.start.failed"));
+				}else{
+					ShowInfo.getInstance().getSetting().put("Enable", true);
+					ShowInfo.getInstance().taskStart();
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.start.success"));
+				}
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("stop", "Stop"), "showinfo.command.showinfo.stop"){
+			public void execute(CommandSender sender, String[] args){
+				if(ShowInfo.getInstance().isTaskStop()){
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.stop.failed"));
+				}else{
+					ShowInfo.getInstance().getSetting().put("Enable", false);
+					ShowInfo.getInstance().taskStop();
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.stop.success"));
+				}
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("push", "Push"), "showinfo.command.showinfo.push", Translation.translate("commands.push.usage"), 1){
+			public void execute(CommandSender sender, String[] args){
+				if(!Pattern.matches("(^-[0-9]*$)|(^[0-9]+$)", args[0])){
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.generic.invalidNumber", args[0]));
+				}else{
+					ShowInfo.getInstance().getSetting().put("PushLevel", Integer.parseInt(args[0]));
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.push.success", args[0]));
+				}
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("tick", "Tick"), "showinfo.command.showinfo.tick", Translation.translate("commands.tick.usage"), 1){
+			public void execute(CommandSender sender, String[] args){
+				if(!Pattern.matches("(^[1-9][0-9]*$)|(^[1-9]+$)", args[0])){
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.generic.invalidNumber", args[0]));
+				}else{
+					ShowInfo.getInstance().getSetting().put("Tick", Integer.parseInt(args[0]));
+					ShowInfo.getInstance().setTaskPeriod(Integer.parseInt(args[0]));
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.tick.success", args[0]));
+				}
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("reload", "Reload"), "showinfo.command.showinfo.reload"){
+			public void execute(CommandSender sender, String[] args){
+				new File(ShowInfo.getInstance().getDataFolder() + "/lang").mkdirs();
+				ShowInfo.getInstance().saveDefaultData(false);
+				ShowInfo.getInstance().loadData();
+				Translation.load(ShowInfo.getInstance().getSetting().get("Language").toString().trim());
+				ShowInfo.getInstance().updatePermissions();
+				ShowInfo.getInstance().registerCommands();
+				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.push.success"));
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("save", "Save"), "showinfo.command.showinfo.save"){
+			public void execute(CommandSender sender, String[] args){
+				ShowInfo.getInstance().saveData();
+				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.save.success"));
+			}
+		});
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("reset", "Reset"), "showinfo.command.showinfo.reset"){
+			public void execute(CommandSender sender, String[] args){
+				ShowInfo.getInstance().saveDefaultData(true);
+				ShowInfo.getInstance().loadData();
+				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.reset.success"));
+			}
+		});
+	}
+
+	public void registerSubCommand(SubCommand subCommand){
+		this.subCommands.put(subCommand.getName().toLowerCase(), subCommand);
+	}
+
+	public SubCommand getSubCommand(String name){
+		return this.subCommands.get(name.toLowerCase());
+	}
+
+	public ArrayList<SubCommand> getSubCommands(){
+		return new ArrayList<SubCommand>(this.subCommands.values());
 	}
 }
