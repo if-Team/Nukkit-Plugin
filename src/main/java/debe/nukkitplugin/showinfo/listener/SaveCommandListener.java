@@ -1,5 +1,6 @@
 package debe.nukkitplugin.showinfo.listener;
 
+import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.event.EventHandler;
@@ -8,33 +9,34 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.server.ServerCommandEvent;
 import debe.nukkitplugin.showinfo.ShowInfo;
+import debe.nukkitplugin.showinfo.utils.Translation;
 
-public class CommandListener implements Listener{
+public class SaveCommandListener implements Listener{
 	private ShowInfo plugin;
 
-	public CommandListener(ShowInfo plugin){
+	public SaveCommandListener(ShowInfo plugin){
 		this.plugin = plugin;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
-		if(event.getMessage().split(" ")[0].equalsIgnoreCase("/save-all")){
-			this.runSaveAll((CommandSender) event.getPlayer());
+		if(event.getMessage().toLowerCase().startsWith("/save-all")){
+			this.saveAll((CommandSender) event.getPlayer());
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onServerCommandEvent(ServerCommandEvent event){
-		if(event.getCommand().split(" ")[0].equalsIgnoreCase("save-all")){
-			this.runSaveAll((CommandSender) event.getSender());
+		if(event.getCommand().toLowerCase().startsWith("save-all")){
+			this.saveAll((CommandSender) event.getSender());
 		}
 	}
 
-	public void runSaveAll(CommandSender sender){
-		Command command = this.plugin.getServer().getCommandMap().getCommand("save-all");
+	public void saveAll(CommandSender sender){
+		Command command = Server.getInstance().getCommandMap().getCommand("save-all");
 		if(command != null && command.testPermissionSilent(sender)){
-			this.plugin.getLogger().notice("Saved the ShowInfo data");
 			this.plugin.saveData();
+			this.plugin.getLogger().notice(Translation.translate("colors.success") + Translation.translate("commands.save.success"));
 		}
 	}
 }
