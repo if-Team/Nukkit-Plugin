@@ -1,0 +1,37 @@
+name: ItemOwnership
+authors: [DeBe, if-Team]
+version: 1.0.0
+main: debe.nukkitplugin.itemownership.ItemOwnership
+api: [1.0.0]
+website: "https://github.com/if-Team/Nukkit-Plugins/ItemOwnership"
+
+permissions:
+  itemownership:
+    children:
+      itemownership.event:
+        children:
+          itemownership.event.pickupitem:
+            default: op
+      itemownership.command:
+        children:
+          itemownership.command.itemownership:
+            default: true
+            children:
+              itemownership.command.itemownership.on:
+                default: true
+              itemownership.command.itemownership.off:
+                default: true
+              itemownership.command.itemownership.enable:
+                default: op
+              itemownership.command.itemownership.disable:
+                default: op
+              itemownership.command.itemownership.distance:
+                default: op
+              itemownership.command.itemownership.span:
+                default: op
+              itemownership.command.itemownership.reload:
+                default: op
+              itemownership.command.itemownership.save:
+                default: op
+              itemownership.command.itemownership.reset:
+                default: false
