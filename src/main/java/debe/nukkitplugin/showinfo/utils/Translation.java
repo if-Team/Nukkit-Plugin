@@ -25,14 +25,14 @@ public class Translation{
 					put("commands.generic.invalidNumber", "You have entered an invalid number : {%0}");
 					put("commands.generic.usage", "Usage: {%0}");
 					put("commands.generic.usagas", "/{%0} {%1} {%2}");
-					put("commands.on.success", "Now information is displayed.");
+					put("commands.on.success", "Now information is display.");
 					put("commands.on.failed", "Information already displayed.");
-					put("commands.off.success", "Now information is not displayed.");
-					put("commands.off.failed", "Information already not displayed.");
-					put("commands.start.success", "Now information is displayed to players.");
-					put("commands.start.failed", "Information is already displayed.");
-					put("commands.stop.success", "Now information is not displayed to players.");
-					put("commands.stop.failed", "Already information is not displayed.");
+					put("commands.off.success", "Now information is not display.");
+					put("commands.off.failed", "Information is already not displayed.");
+					put("commands.enable.success", "Send infomation is enable.");
+					put("commands.enable.failed", "Send infomation is already enabled.");
+					put("commands.disable.success", "Send infomation is disable.");
+					put("commands.disable.failed", "Send infomation is already disabled.");
 					put("commands.push.usage", "<PushLevel>");
 					put("commands.push.success", "Push level is set to {%0} Level.");
 					put("commands.tick.usage", "<Tick>  (1second per 20tick)");
@@ -63,7 +63,7 @@ public class Translation{
 			for(int i = 0; i < params.length; i++){
 				text = text.replace("{%" + i + "}", params[i]);
 			}
-			return text;
+			return text.replace("\\n", "\n");
 		}
 	}
 }

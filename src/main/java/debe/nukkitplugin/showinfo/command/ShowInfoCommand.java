@@ -77,25 +77,25 @@ public class ShowInfoCommand extends Command{
 				}
 			}
 		});
-		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("start", "Start"), "showinfo.command.showinfo.start"){
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("enable", "Enable"), "showinfo.command.showinfo.enable"){
 			public void execute(CommandSender sender, String[] args){
 				if(!ShowInfo.getInstance().isTaskStop()){
-					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.start.failed"));
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.enable.failed"));
 				}else{
 					ShowInfo.getInstance().getSetting().put("Enable", true);
 					ShowInfo.getInstance().taskStart();
-					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.start.success"));
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.enable.success"));
 				}
 			}
 		});
-		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("stop", "Stop"), "showinfo.command.showinfo.stop"){
+		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("disable", "Disable"), "showinfo.command.showinfo.disable"){
 			public void execute(CommandSender sender, String[] args){
 				if(ShowInfo.getInstance().isTaskStop()){
-					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.stop.failed"));
+					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.disable.failed"));
 				}else{
 					ShowInfo.getInstance().getSetting().put("Enable", false);
 					ShowInfo.getInstance().taskStop();
-					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.stop.success"));
+					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.disable.success"));
 				}
 			}
 		});

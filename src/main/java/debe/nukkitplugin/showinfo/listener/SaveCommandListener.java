@@ -12,11 +12,7 @@ import debe.nukkitplugin.showinfo.ShowInfo;
 import debe.nukkitplugin.showinfo.utils.Translation;
 
 public class SaveCommandListener implements Listener{
-	private ShowInfo plugin;
-
-	public SaveCommandListener(ShowInfo plugin){
-		this.plugin = plugin;
-	}
+	public SaveCommandListener(){}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
@@ -35,8 +31,8 @@ public class SaveCommandListener implements Listener{
 	public void saveAll(CommandSender sender){
 		Command command = Server.getInstance().getCommandMap().getCommand("save-all");
 		if(command != null && command.testPermissionSilent(sender)){
-			this.plugin.saveData();
-			this.plugin.getLogger().notice(Translation.translate("colors.success") + Translation.translate("commands.save.success"));
+			ShowInfo.getInstance().saveData();
+			ShowInfo.getInstance().getLogger().notice(Translation.translate("colors.success") + Translation.translate("commands.save.success"));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 name: ShowInfo
 authors: [DeBe, if-Team]
-version: 1.0.1
+version: 1.0.2
 main: debe.nukkitplugin.showinfo.ShowInfo
 api: [1.0.0]
 website: "https://github.com/if-Team/Nukkit-Plugins/ShowInfo"
@@ -17,15 +17,13 @@ permissions:
                 default: true
               showinfo.command.showinfo.off:
                 default: true
-              showinfo.command.showinfo.start:
+              showinfo.command.showinfo.enable:
                 default: op
-              showinfo.command.showinfo.stop:
+              showinfo.command.showinfo.disable:
                 default: op
               showinfo.command.showinfo.push:
                 default: op
               showinfo.command.showinfo.tick:
-                default: op
-              showinfo.command.showinfo.oprank:
                 default: op
               showinfo.command.showinfo.reload:
                 default: op
