@@ -1,0 +1,13 @@
+{
+  "itemownership.event.pickupitem": "OP",
+  "itemownership.command.itemownership": "TRUE",
+  "itemownership.command.itemownership.on": "TRUE",
+  "itemownership.command.itemownership.off": "TRUE",
+  "itemownership.command.itemownership.enable": "OP",
+  "itemownership.command.itemownership.disable": "OP",
+  "itemownership.command.itemownership.distance": "OP",
+  "itemownership.command.itemownership.span": "OP",
+  "itemownership.command.itemownership.reload": "OP",
+  "itemownership.command.itemownership.save": "OP",
+  "itemownership.command.itemownership.reset": "FALSE"
+}

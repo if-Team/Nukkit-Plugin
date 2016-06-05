@@ -1,0 +1,10 @@
+{
+  "on": "On",
+  "off": "Off",
+  "start": "Start",
+  "stop": "Stop",
+  "span": "Span",
+  "reload": "Reload",
+  "save": "Save",
+  "reset": "Reset"
+}
