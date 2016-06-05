@@ -42,7 +42,7 @@ public class ShowInfo extends PluginBase{
 		if(Utils.toBoolean(this.setting.get("Enable").toString())){
 			this.taskStart();
 		}
-		this.getServer().getPluginManager().registerEvents(new SaveCommandListener(this), this);
+		this.getServer().getPluginManager().registerEvents(new SaveCommandListener(), this);
 	}
 
 	@Override
@@ -106,11 +106,10 @@ public class ShowInfo extends PluginBase{
 				put("showinfo.command.showinfo", "TRUE");
 				put("showinfo.command.showinfo.on", "TRUE");
 				put("showinfo.command.showinfo.off", "TRUE");
-				put("showinfo.command.showinfo.start", "OP");
-				put("showinfo.command.showinfo.stop", "OP");
+				put("showinfo.command.showinfo.enable", "OP");
+				put("showinfo.command.showinfo.disable", "OP");
 				put("showinfo.command.showinfo.push", "OP");
 				put("showinfo.command.showinfo.tick", "OP");
-				put("showinfo.command.showinfo.oprank", "OP");
 				put("showinfo.command.showinfo.reload", "OP");
 				put("showinfo.command.showinfo.save", "OP");
 				put("showinfo.command.showinfo.reset", "FALSE");
@@ -134,8 +133,8 @@ public class ShowInfo extends PluginBase{
 			{
 				put("on", "On");
 				put("off", "Off");
-				put("start", "Start");
-				put("stop", "Stop");
+				put("enable", "Enable");
+				put("disable", "Disable");
 				put("push", "Push");
 				put("tick", "Tick");
 				put("reload", "Reload");
@@ -152,7 +151,6 @@ public class ShowInfo extends PluginBase{
 			{
 				put("Language", "Default");
 				put("Enable", true);
-				put("OpInRank", false);
 				put("PushLevel", 0);
 				put("Tick", 20);
 			}
