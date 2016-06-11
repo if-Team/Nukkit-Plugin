@@ -2,5 +2,5 @@
   "Language": "Default",
   "Enable": true,
   "PushLevel": 0,
-  "Tick": 20
+  "Period": 20
 }

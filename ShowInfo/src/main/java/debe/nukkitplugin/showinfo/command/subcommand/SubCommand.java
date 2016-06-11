@@ -47,7 +47,7 @@ public abstract class SubCommand{
 	}
 
 	public String getUsage(){
-		return Translation.translate(Translation.translate("prefix") + " " + "commands.generic.usagas", new String[]{this.mainCommand.getLabel(), this.getName(), this.usage});
+		return Translation.translate("commands.generic.usages", new String[]{this.mainCommand.getLabel(), this.getName(), this.usage});
 	}
 
 	public int getNeedArgCount(){

@@ -9,7 +9,6 @@ import cn.nukkit.permission.Permission;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.TaskHandler;
 import debe.nukkitplugin.showinfo.command.ShowInfoCommand;
-import debe.nukkitplugin.showinfo.event.SendInfoEvent;
 import debe.nukkitplugin.showinfo.listener.SaveCommandListener;
 import debe.nukkitplugin.showinfo.task.ShowInfoTask;
 import debe.nukkitplugin.showinfo.utils.Translation;
@@ -51,32 +50,6 @@ public class ShowInfo extends PluginBase{
 		this.saveData();
 	}
 
-	public void onTaskRun(){
-		StringBuilder formatBuilder;
-		int push = Utils.toInt(this.setting.get("PushLevel").toString());
-		if(push == 0){
-			formatBuilder = new StringBuilder(this.format.toString());
-		}else{
-			StringBuilder pushBuilder = new StringBuilder("");
-			for(int i = 0; i < Math.abs(push); i++){
-				pushBuilder.append(" ");
-			}
-			if(push > 0){
-				formatBuilder = new StringBuilder(pushBuilder.toString()).append(this.format.replace("\n", "\n" + pushBuilder.toString()));
-			}else{
-				formatBuilder = new StringBuilder(this.format.replace("\n", pushBuilder.toString() + "\n")).append(pushBuilder.toString());
-			}
-		}
-		String format = formatBuilder.toString();
-		this.getServer().getOnlinePlayers().values().stream().filter(player->(!this.data.containsKey(player.getName().toLowerCase()) && player.isAlive() && player.spawned)).forEach(player->{
-			SendInfoEvent event = new SendInfoEvent(player, format);
-			this.getServer().getPluginManager().callEvent(event);
-			if(!event.isCancelled()){
-				player.sendPopup(event.getInfo());
-			}
-		});
-	}
-
 	public boolean isTaskStop(){
 		return (this.showinfoTask == null || this.showinfoTask.isCancelled());
 	}
@@ -85,13 +58,8 @@ public class ShowInfo extends PluginBase{
 		if(this.isTaskStop() != true){
 			this.taskStop();
 		}
-		this.showinfoTask = this.getServer().getScheduler().scheduleRepeatingTask(new ShowInfoTask(this), Utils.toInt(this.setting.get("Tick").toString()));
-	}
-
-	public void setTaskPeriod(Integer period){
-		if(this.isTaskStop() != true){
-			this.showinfoTask.setPeriod(period);
-		}
+		int period = Utils.toInt(this.setting.get("Period").toString());
+		this.showinfoTask = this.getServer().getScheduler().scheduleDelayedRepeatingTask(new ShowInfoTask(this), period, period);
 	}
 
 	public void taskStop(){
@@ -109,7 +77,7 @@ public class ShowInfo extends PluginBase{
 				put("showinfo.command.showinfo.enable", "OP");
 				put("showinfo.command.showinfo.disable", "OP");
 				put("showinfo.command.showinfo.push", "OP");
-				put("showinfo.command.showinfo.tick", "OP");
+				put("showinfo.command.showinfo.period", "OP");
 				put("showinfo.command.showinfo.reload", "OP");
 				put("showinfo.command.showinfo.save", "OP");
 				put("showinfo.command.showinfo.reset", "FALSE");
@@ -136,7 +104,7 @@ public class ShowInfo extends PluginBase{
 				put("enable", "Enable");
 				put("disable", "Disable");
 				put("push", "Push");
-				put("tick", "Tick");
+				put("period", "Period");
 				put("reload", "Reload");
 				put("save", "Save");
 				put("reset", "Reset");
@@ -152,10 +120,9 @@ public class ShowInfo extends PluginBase{
 				put("Language", "Default");
 				put("Enable", true);
 				put("PushLevel", 0);
-				put("Tick", 20);
+				put("Period", 20);
 			}
 		});
-		this.format = Utils.loadFile(new File(this.getDataFolder() + "/Format.txt"));
 	}
 
 	public void saveData(){
@@ -179,7 +146,7 @@ public class ShowInfo extends PluginBase{
 		}.forEach(fileName->this.saveResource("defaults/" + fileName, fileName, replace));
 	}
 
-	public String getFomat(){
+	public String getFormat(){
 		return this.format;
 	}
 
