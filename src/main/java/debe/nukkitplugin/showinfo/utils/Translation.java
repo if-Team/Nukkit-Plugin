@@ -24,7 +24,7 @@ public class Translation{
 					put("commands.generic.notFound", "Unknown command. Usage : {%0}");
 					put("commands.generic.invalidNumber", "You have entered an invalid number : {%0}");
 					put("commands.generic.usage", "Usage: {%0}");
-					put("commands.generic.usagas", "/{%0} {%1} {%2}");
+					put("commands.generic.usages", "/{%0} {%1} {%2}");
 					put("commands.on.success", "Now information is display.");
 					put("commands.on.failed", "Information already displayed.");
 					put("commands.off.success", "Now information is not display.");
@@ -35,8 +35,8 @@ public class Translation{
 					put("commands.disable.failed", "Send infomation is already disabled.");
 					put("commands.push.usage", "<PushLevel>");
 					put("commands.push.success", "Push level is set to {%0} Level.");
-					put("commands.tick.usage", "<Tick>  (1second per 20tick)");
-					put("commands.tick.success", "Show delay is set to {%0} Ticks.");
+					put("commands.period.usage", "<Tick>  (1second per 20tick)");
+					put("commands.period.success", "Repeat period is set to {%0} Ticks.");
 					put("commands.reload.success", "Reloaded ShowInfo data.");
 					put("commands.save.success", "Saved ShowInfo data.");
 					put("commands.reset.success", "Reseted ShowInfo data.");

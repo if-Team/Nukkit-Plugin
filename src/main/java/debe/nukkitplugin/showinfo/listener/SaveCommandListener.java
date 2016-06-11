@@ -32,7 +32,7 @@ public class SaveCommandListener implements Listener{
 		Command command = Server.getInstance().getCommandMap().getCommand("save-all");
 		if(command != null && command.testPermissionSilent(sender)){
 			ShowInfo.getInstance().saveData();
-			ShowInfo.getInstance().getLogger().notice(Translation.translate("colors.success") + Translation.translate("commands.save.success"));
+			Server.getInstance().getLogger().notice(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.save.success"));
 		}
 	}
 }

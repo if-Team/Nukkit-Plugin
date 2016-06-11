@@ -5,8 +5,7 @@
   "showinfo.command.showinfo.enable": "OP",
   "showinfo.command.showinfo.disable": "OP",
   "showinfo.command.showinfo.push": "OP",
-  "showinfo.command.showinfo.tick": "OP",
-  "showinfo.command.showinfo.oprank": "OP",
+  "showinfo.command.showinfo.period": "OP",
   "showinfo.command.showinfo.reload": "OP",
   "showinfo.command.showinfo.save": "OP",
   "showinfo.command.showinfo.reset": "FALSE"

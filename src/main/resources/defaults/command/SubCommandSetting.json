@@ -1,10 +1,10 @@
 {
   "on": "On",
   "off": "Off",
-  "start": "Start",
-  "stop": "Stop",
+  "enable": "Enable",
+  "disable": "Disable",
   "push": "Push",
-  "tick": "Tick",
+  "period": "Period",
   "reload": "Reload",
   "save": "Save",
   "reset": "Reset"
