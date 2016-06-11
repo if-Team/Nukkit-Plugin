@@ -1,0 +1,9 @@
+{
+  "autogarbagecollector.command.autogarbagecollector": "OP",
+  "autogarbagecollector.command.autogarbagecollector.enable": "OP",
+  "autogarbagecollector.command.autogarbagecollector.disable": "OP",
+  "autogarbagecollector.command.autogarbagecollector.period": "OP",
+  "autogarbagecollector.command.autogarbagecollector.reload": "OP",
+  "autogarbagecollector.command.autogarbagecollector.save": "OP",
+  "autogarbagecollector.command.autogarbagecollector.reset": "FALSE"
+}

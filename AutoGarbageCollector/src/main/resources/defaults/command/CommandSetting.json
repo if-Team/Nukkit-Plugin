@@ -1,0 +1,7 @@
+{
+  "Command": "AutoGarbageCollector",
+  "Aliases": [
+    "AGC",
+    "AutoGC"
+  ]
+}
