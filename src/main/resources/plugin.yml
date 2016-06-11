@@ -1,0 +1,27 @@
+name: AutoGarbageCollector
+authors: [DeBe, if-Team]
+version: 1.0.0
+main: debe.nukkitplugin.autogarbagecollector.AutoGarbageCollector
+api: [1.0.0]
+website: "https://github.com/if-Team/Nukkit-Plugins/AutoGarbageCollector"
+
+permissions:
+  autogarbagecollector:
+    children:
+      autogarbagecollector.command:
+        children:
+          autogarbagecollector.command.autogarbagecollector:
+            default: op
+            children:
+              autogarbagecollector.command.autogarbagecollector.enable:
+                default: op
+              autogarbagecollector.command.autogarbagecollector.disable:
+                default: op
+              autogarbagecollector.command.autogarbagecollector.period:
+                default: op
+              autogarbagecollector.command.autogarbagecollector.reload:
+                default: op
+              autogarbagecollector.command.autogarbagecollector.save:
+                default: op
+              autogarbagecollector.command.autogarbagecollector.reset:
+                default: false
