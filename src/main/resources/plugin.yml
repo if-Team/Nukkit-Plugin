@@ -1,0 +1,6 @@
+name: PraterConsole
+authors: [DeBe, if-Team]
+version: 1.0.0
+main: debe.nukkitplugin.praterconsole.PraterConsole
+api: [1.0.0]
+website: "https://github.com/if-Team/Nukkit-Plugins/PraterConsole"
