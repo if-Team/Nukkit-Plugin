@@ -126,7 +126,7 @@ public class ItemOwnershipCommand extends Command{
 				Translation.load(ItemOwnership.getInstance().getSetting().get("Language").toString().trim());
 				ItemOwnership.getInstance().updatePermissions();
 				ItemOwnership.getInstance().registerCommands();
-				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.push.success"));
+				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.reload.success"));
 			}
 		});
 		this.registerSubCommand(new SubCommand(this, subCommands.getOrDefault("save", "Save"), "itemownership.command.itemownership.save"){

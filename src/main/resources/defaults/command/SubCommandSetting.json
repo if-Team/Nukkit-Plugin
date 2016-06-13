@@ -1,8 +1,9 @@
 {
   "on": "On",
   "off": "Off",
-  "start": "Start",
-  "stop": "Stop",
+  "enable": "Enable",
+  "disable": "Disable",
+  "distance": "Distance",
   "span": "Span",
   "reload": "Reload",
   "save": "Save",
