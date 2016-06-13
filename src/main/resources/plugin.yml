@@ -1,0 +1,31 @@
+name: ItemDisplay
+authors: [DeBe, if-Team]
+version: 1.0.0
+main: debe.nukkitplugin.itemdisplay.ItemDisplay
+api: [1.0.0]
+website: "https://github.com/if-Team/Nukkit-Plugins/ItemDisplay"
+
+depend: [JsonSimpleLib]
+
+permissions:
+  itemdisplay:
+    children:
+      itemdisplay.command:
+        children:
+          itemdisplay.command.itemdisplay:
+            default: op
+            children:
+              itemdisplay.command.itemdisplay.add:
+                default: op
+              itemdisplay.command.itemdisplay.remove:
+                default: op
+              itemdisplay.command.itemdisplay.view:
+                default: op
+              itemdisplay.command.itemdisplay.list:
+                default: op
+              itemdisplay.command.itemdisplay.reload:
+                default: op
+              itemdisplay.command.itemdisplay.save:
+                default: op
+              itemdisplay.command.itemdisplay.reset:
+                default: false
