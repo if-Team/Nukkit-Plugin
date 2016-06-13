@@ -6,7 +6,7 @@
 	<version>1.0.3-SNAPSHOT</version>
 	<name>ShowInfo</name>
 	<description>Send information to players in server</description>
-	<url>https://github.com/if-Team/Nukkit-Plugins/ShowInfo</url>
+	<url>https://github.com/if-Team/Nukkit-Plugins/tree/master/ShowInfo</url>
 
 	<repositories>
 		<repository>
@@ -35,6 +35,15 @@
 					<archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
