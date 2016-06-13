@@ -1,0 +1,6 @@
+name: JsonSimpleLib
+authors: [DeBe, if-Team]
+version: 1.0.0
+main: debe.nukkitplugin.jsonsimplelib.JsonSimpleLib
+api: [1.0.0]
+website: "https://github.com/if-Team/Nukkit-Plugins/JsonSimpleLib"
