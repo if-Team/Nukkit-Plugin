@@ -3,7 +3,7 @@ authors: [DeBe, if-Team]
 version: 1.0.0
 main: debe.nukkitplugin.itemdisplay.ItemDisplay
 api: [1.0.0]
-website: "https://github.com/if-Team/Nukkit-Plugins/ItemDisplay"
+website: "https://github.com/if-Team/Nukkit-Plugins/tree/master/ItemDisplay"
 
 depend: [JsonSimpleLib]
 
