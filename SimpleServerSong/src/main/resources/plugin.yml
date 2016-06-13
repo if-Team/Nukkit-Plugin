@@ -3,6 +3,6 @@ authors: [DeBe, if-Team]
 version: 1.0.2
 main: debe.nukkitplugin.simpleserversong.SimpleServerSong
 api: [1.0.0]
-website: "https://github.com/if-Team/Nukkit-Plugins/SimpleServerSong"
+website: "https://github.com/if-Team/Nukkit-Plugins/tree/master/SimpleServerSong"
 
 depend: [NoteSongAPI]

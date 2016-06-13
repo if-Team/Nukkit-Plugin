@@ -6,7 +6,7 @@
 	<version>1.0.2-SNAPSHOT</version>
 	<name>NoteSongAPI</name>
 	<description>NoteBlockSong API on Nukkit</description>
-	<url>https://github.com/if-Team/Nukkit-Plugins/NoteSongAPI</url>
+	<url>https://github.com/if-Team/Nukkit-Plugins/tree/master/NoteSongAPI</url>
 
 	<repositories>
 		<repository>

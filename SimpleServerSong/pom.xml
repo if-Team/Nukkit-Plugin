@@ -6,7 +6,7 @@
 	<version>1.0.2-SNAPSHOT</version>
 	<name>SimpleServerSong</name>
 	<description>Play server song by using the NoteSongAPI</description>
-	<url>https://github.com/if-Team/Nukkit-Plugins/SimpleServerSong</url>
+	<url>https://github.com/if-Team/Nukkit-Plugins/tree/master/SimpleServerSong</url>
 
 	<repositories>
 		<repository>
