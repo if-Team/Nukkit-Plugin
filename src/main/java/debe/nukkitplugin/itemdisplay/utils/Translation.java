@@ -16,7 +16,7 @@ public class Translation{
 		if(file.exists() && file.isFile()){
 			Translation.langs = FileUtils.parseProperties(FileUtils.loadFile(file), new LinkedHashMap<String, String>(){
 				{
-					put("prefix", "[https://github.com/if-Team/Nukkit-Plugins]");
+					put("prefix", "[ItemDisplay]");
 					put("colors.success", TextFormat.GREEN);
 					put("colors.failed", TextFormat.RED);
 					put("showNametag.toOwner", "§aYour Item\n  {%1}sec...");
@@ -39,9 +39,9 @@ public class Translation{
 					put("commands.distance.success", "Nametag display distance is set to {%0} blocks.");
 					put("commands.span.usage", "<Tick>  (1second per 20tick)");
 					put("commands.span.success", "Ownership span is set to {%0} Ticks.");
-					put("commands.reload.success", "Reloaded https://github.com/if-Team/Nukkit-Plugins data.");
-					put("commands.save.success", "Saved https://github.com/if-Team/Nukkit-Plugins data.");
-					put("commands.reset.success", "Reseted https://github.com/if-Team/Nukkit-Plugins data.");
+					put("commands.reload.success", "Reloaded ItemDisplay data.");
+					put("commands.save.success", "Saved ItemDisplay data.");
+					put("commands.reset.success", "Reseted ItemDisplay data.");
 				}
 			});
 		}else{
