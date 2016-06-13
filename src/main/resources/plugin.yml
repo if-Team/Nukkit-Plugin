@@ -3,4 +3,4 @@ authors: [DeBe, if-Team]
 version: 1.0.2
 main: debe.nukkitplugin.notesongapi.NoteSongAPI
 api: [1.0.0]
-website: "https://github.com/if-Team/Nukkit-Plugins/NoteSongAPI"
+website: "https://github.com/if-Team/Nukkit-Plugins/tree/master/NoteSongAPI"
