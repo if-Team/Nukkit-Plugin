@@ -1,0 +1,10 @@
+{
+  "itemdisplay.command.itemdisplay": "OP",
+  "itemdisplay.command.itemdisplay.add": "OP",
+  "itemdisplay.command.itemdisplay.remove": "OP",
+  "itemdisplay.command.itemdisplay.view": "OP",
+  "itemdisplay.command.itemdisplay.list": "OP",
+  "itemdisplay.command.itemdisplay.reload": "OP",
+  "itemdisplay.command.itemdisplay.save": "OP",
+  "itemdisplay.command.itemdisplay.reset": "FALSE"
+}
