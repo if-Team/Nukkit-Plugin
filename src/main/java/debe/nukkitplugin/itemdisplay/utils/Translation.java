@@ -20,6 +20,7 @@ public class Translation{
 					put("colors.success", TextFormat.GREEN);
 					put("colors.failed", TextFormat.RED);
 					put("showNametag.toViewer", "§aName : {%0} \n§aItemID : {%1}:{%2}");
+					put("touchTask.add.success", "Imaginary item {%0} is added. ID: {%1}:{%2}, Pos: [X:{%1}, Y:{%2}, Z:{%3}, World:{%4}]");
 					put("commands.generic.permission", "You do not have permission to use this command");
 					put("commands.generic.ingame", "You can only perform this command as a player");
 					put("commands.generic.notFound", "Unknown command. Usage : {%0}");
