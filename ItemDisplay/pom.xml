@@ -6,7 +6,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>ItemDisplay</name>
 	<description>Display item entity.</description>
-	<url>https://github.com/if-Team/Nukkit-Plugins/ItemDisplay</url>
+	<url>https://github.com/if-Team/Nukkit-Plugins/tree/master/ItemDisplay</url>
 
 	<repositories>
 		<repository>

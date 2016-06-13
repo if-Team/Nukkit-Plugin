@@ -6,7 +6,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>ItemOwnership</name>
 	<description>Prevent offender, who steal item.</description>
-	<url>https://github.com/if-Team/Nukkit-Plugins/ItemOwnership</url>
+	<url>https://github.com/if-Team/Nukkit-Plugins/tree/master/ItemOwnership</url>
 
 	<repositories>
 		<repository>

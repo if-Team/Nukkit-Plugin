@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>debe.nukkitplugin</groupId>
 	<artifactId>notesongapi</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>NoteSongAPI</name>
 	<description>NoteBlockSong API on Nukkit</description>
 	<url>https://github.com/if-Team/Nukkit-Plugins/NoteSongAPI</url>
