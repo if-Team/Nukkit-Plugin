@@ -134,7 +134,7 @@ public class ItemDisplayCommand extends Command{
 					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.list.success.title", new String[]{String.valueOf(page + 1), String.valueOf(maxPage + 1), String.valueOf(itemCount)}));
 					for(int index = page * 5; index < page * 5 + 5 && index < itemCount; index++){
 						VirtualItem virtualItem = virtualItems.get(index);
-						sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.list.success.entry", new String[]{String.valueOf(index + 1), virtualItem.getName(), String.valueOf(virtualItem.getItem().getId()) + ":" + virtualItem.getItem().getDamage(), String.valueOf(virtualItem.x), String.valueOf(virtualItem.y), String.valueOf(virtualItem.z), virtualItem.levelName}));
+						sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.list.success.entry", new String[]{String.valueOf(index + 1), virtualItem.getName(), String.valueOf(virtualItem.getItem().getId()) + ":" + virtualItem.getItem().getDamage(), String.valueOf(virtualItem.x), String.valueOf(virtualItem.y), String.valueOf(virtualItem.z), virtualItem.getLevelName()}));
 					}
 				}
 			}

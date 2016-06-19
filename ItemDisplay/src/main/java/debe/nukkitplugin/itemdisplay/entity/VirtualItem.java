@@ -27,10 +27,7 @@ public class VirtualItem extends Vector3{
 	protected Item item;
 	protected long id;
 	protected long riderId;
-	public double x;
-	public double y;
-	public double z;
-	public String levelName;
+	private String levelName;
 
 	public static VirtualItem fromString(String name, String levelName, String data){
 		String[] params = data.split(":");
@@ -183,5 +180,9 @@ public class VirtualItem extends Vector3{
 	@Override
 	public String toString(){
 		return String.join(":", String.valueOf(this.item.getId()), String.valueOf(this.item.getDamage()), String.valueOf(this.item.hasEnchantments()), String.valueOf(this.x), String.valueOf(this.y), String.valueOf(this.z));
+	}
+
+	public String getLevelName(){
+		return this.levelName;
 	}
 }

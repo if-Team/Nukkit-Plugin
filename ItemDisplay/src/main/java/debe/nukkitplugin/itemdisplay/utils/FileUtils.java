@@ -143,10 +143,10 @@ public class FileUtils{
 			FileUtils.saveFile(new File(plugin.getDataFolder() + "/Data.json"), jsonData);
 			HashMap<String, HashMap<String, String>> virtualItemTable = new HashMap<String, HashMap<String, String>>();
 			plugin.getVirtualItems().forEach((name, virtualItem)->{
-				if(!virtualItemTable.containsKey(virtualItem.levelName)){
-					virtualItemTable.put(virtualItem.levelName, new HashMap<String, String>());
+				if(!virtualItemTable.containsKey(virtualItem.getLevelName())){
+					virtualItemTable.put(virtualItem.getLevelName(), new HashMap<String, String>());
 				}
-				virtualItemTable.get(virtualItem.levelName).put(name, virtualItem.toString());
+				virtualItemTable.get(virtualItem.getLevelName()).put(name, virtualItem.toString());
 			});
 			virtualItemTable.forEach((levelName, virtualItems)->{
 				JSONObject jsonItemsData = new JSONObject();
