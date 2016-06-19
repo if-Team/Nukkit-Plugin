@@ -166,7 +166,7 @@ public class VirtualItem{
 	}
 
 	public String getName(){
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name){
@@ -174,7 +174,7 @@ public class VirtualItem{
 	}
 
 	public Item getItem(){
-		return item;
+		return this.item;
 	}
 
 	public void setItem(Item item){
