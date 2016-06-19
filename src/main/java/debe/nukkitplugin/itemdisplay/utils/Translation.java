@@ -20,7 +20,7 @@ public class Translation{
 					put("colors.success", TextFormat.GREEN);
 					put("colors.failed", TextFormat.RED);
 					put("showNametag.toViewer", "§aName : {%0} \n§aItemID : {%1}:{%2}");
-					put("touchTask.add.success", "Imaginary item {%0} is added. ID: {%1}:{%2}, Pos: [X:{%1}, Y:{%2}, Z:{%3}, World:{%4}]");
+					put("touchTask.add.success", "Virtual item {%0} is added. ID: {%1}:{%2}, Pos: [X:{%1}, Y:{%2}, Z:{%3}, World:{%4}]");
 					put("commands.generic.permission", "You do not have permission to use this command");
 					put("commands.generic.ingame", "You can only perform this command as a player");
 					put("commands.generic.notFound", "Unknown command. Usage : {%0}");
@@ -31,12 +31,12 @@ public class Translation{
 					put("commands.add.failed.alreadyExists", "{%0} is already exists name.");
 					put("commands.add.failed.invalidItemID", "You have entered an invalid Item ID : {%0}.\nPlease enter ItemID or \"*\".\n   * is means item in your hand");
 					put("commands.remove.usage", "<Name>");
-					put("commands.remove.success", "Imaginary item {%0} is removed.");
+					put("commands.remove.success", "Virtual item {%0} is removed.");
 					put("commands.remove.failed.notFound", "{%0} is Unknown name.");
 					put("commands.cancel.success", "Cancelled your task.");
 					put("commands.cancel.failed", "You not have any task.");
-					put("commands.view.enable", "Now you can view the imaginary item's nametag.");
-					put("commands.view.disable", "Now you can't view the imaginary item's nametag.");
+					put("commands.view.enable", "Now you can view the virtual item's nametag.");
+					put("commands.view.disable", "Now you can't view the virtual item's nametag.");
 					put("commands.list.usage", "[Page]");
 					put("commands.list.success.title", "ItemDisplay list. (Page {%0} of {%1}) (Count: {%2})");
 					put("commands.list.success.entry", "[{%0}] Name: {%1}, ID: {%2}, Pos: [X: {%3}, Y: {%4}, Z: {%5}, World: {%6}]");
