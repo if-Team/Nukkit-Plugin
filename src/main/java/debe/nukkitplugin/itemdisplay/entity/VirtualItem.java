@@ -69,8 +69,8 @@ public class VirtualItem{
 	}
 
 	public VirtualItem(String name, Item item, double x, double y, double z, String levelName){
-		this.setName(name);
-		this.setItem(item);
+		this.name = name;
+		this.item = item;
 		this.x = x;
 		this.y = y;
 		this.z = z;
