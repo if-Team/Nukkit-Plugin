@@ -1,6 +1,5 @@
 package debe.nukkitplugin.itemdisplay.entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +21,8 @@ import debe.nukkitplugin.itemdisplay.utils.Translation;
 import debe.nukkitplugin.itemdisplay.utils.Utils;
 
 public class VirtualItem extends Vector3{
-	protected Map<Integer, Player> viewers = new HashMap<Integer, Player>();
 	protected String name;
+	protected Map<Integer, Player> viewers = new HashMap<Integer, Player>();
 	protected Item item;
 	protected long id;
 	protected long riderId;
@@ -75,8 +74,8 @@ public class VirtualItem extends Vector3{
 		this.riderId = Entity.entityCount++;
 	}
 
-	public ArrayList<Player> getViewers(){
-		return new ArrayList<Player>(this.viewers.values());
+	public Map<Integer, Player> getViewers(){
+		return this.viewers;
 	}
 
 	public boolean canSee(Player player){

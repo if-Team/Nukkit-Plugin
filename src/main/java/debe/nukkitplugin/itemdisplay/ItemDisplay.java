@@ -139,7 +139,7 @@ public class ItemDisplay extends PluginBase{
 			this.nametagViewers.add(name.toLowerCase());
 			Player player = this.getServer().getPlayerExact(name);
 			if(player instanceof Player){
-				this.getVirtualItems().values().stream().filter(virtualItem->virtualItem.isSpawned(player)).forEach(virtualItem->virtualItem.respawnTo(player));
+				VirtualItem.respawnAllTo(player);
 			}
 		}
 	}
@@ -153,7 +153,7 @@ public class ItemDisplay extends PluginBase{
 			this.nametagViewers.remove(name.toLowerCase());
 			Player player = this.getServer().getPlayerExact(name);
 			if(player instanceof Player){
-				this.getVirtualItems().values().stream().filter(virtualItem->virtualItem.isSpawned(player)).forEach(virtualItem->virtualItem.respawnTo(player));
+				VirtualItem.respawnAllTo(player);
 			}
 		}
 	}

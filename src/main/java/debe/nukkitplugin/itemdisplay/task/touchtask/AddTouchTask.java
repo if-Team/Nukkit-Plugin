@@ -21,9 +21,10 @@ public class AddTouchTask extends TouchTask{
 	}
 
 	@Override
-	public void onTouch(Block block){
-		ItemDisplay.getInstance().addVirtualItem(this.name, this.item, block);
-		this.player.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("touchTask.add.success", new String[]{this.name, String.valueOf(this.item.getId()), String.valueOf(this.item.getDamage()), String.valueOf(block.x), String.valueOf(block.y), String.valueOf(block.z), block.level.getFolderName()}));
-		super.onTouch(block);
+	public void onTouch(Block block, int side){
+		Block targetBlock = block.getSide(side);
+		ItemDisplay.getInstance().addVirtualItem(this.name, this.item, targetBlock);
+		this.player.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("touchTask.add.success", new String[]{this.name, String.valueOf(this.item.getId()), String.valueOf(this.item.getDamage()), String.valueOf(targetBlock.x), String.valueOf(targetBlock.y), String.valueOf(targetBlock.z), targetBlock.level.getFolderName()}));
+		super.onTouch(block, side);
 	}
 }

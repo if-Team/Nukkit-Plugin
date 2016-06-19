@@ -15,7 +15,7 @@ public abstract class TouchTask{
 		return this.player;
 	}
 
-	public void onTouch(Block block){
+	public void onTouch(Block block, int side){
 		ItemDisplay.getInstance().removeTouchTask(this);
 	}
 }

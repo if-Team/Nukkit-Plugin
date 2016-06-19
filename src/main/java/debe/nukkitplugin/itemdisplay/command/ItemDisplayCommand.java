@@ -2,6 +2,7 @@ package debe.nukkitplugin.itemdisplay.command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import debe.nukkitplugin.itemdisplay.command.subcommand.SubCommand;
 import debe.nukkitplugin.itemdisplay.command.subcommand.SubCommandData;
 import debe.nukkitplugin.itemdisplay.entity.VirtualItem;
 import debe.nukkitplugin.itemdisplay.task.touchtask.AddTouchTask;
+import debe.nukkitplugin.itemdisplay.utils.FileUtils;
 import debe.nukkitplugin.itemdisplay.utils.Translation;
 import debe.nukkitplugin.itemdisplay.utils.Utils;
 
@@ -142,12 +144,9 @@ public class ItemDisplayCommand extends Command{
 		this.registerSubCommand(new SubCommand(this, subCommands.get("reload"), "itemdisplay.command.itemdisplay.reload"){
 			@Override
 			public void execute(CommandSender sender, String[] args){
-				plugin.getVirtualItems().values().forEach(virtualItem->{
-					Server.getInstance().getOnlinePlayers().values().stream().filter(player->virtualItem.isSpawned(player)).forEach(player->{
-						virtualItem.despawnFrom(player);
-					});
-				});
+				VirtualItem.despawnAllFromAll();
 				plugin.loadAll();
+				Server.getInstance().getLevels().values().forEach(FileUtils::loadData);
 				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.reload.success"));
 			}
 		});
@@ -161,7 +160,9 @@ public class ItemDisplayCommand extends Command{
 		this.registerSubCommand(new SubCommand(this, subCommands.get("reset"), "itemdisplay.command.itemdisplay.reset"){
 			@Override
 			public void execute(CommandSender sender, String[] args){
-				plugin.getVirtualItems().values().forEach(VirtualItem::despawnFromAll);
+				VirtualItem.despawnAllFromAll();
+				plugin.setVirtualItems(new HashMap<String, VirtualItem>());
+				plugin.saveAll();
 				plugin.saveDefaultData(true);
 				plugin.loadAll();
 				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.reset.success"));
