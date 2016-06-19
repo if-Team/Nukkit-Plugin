@@ -104,6 +104,7 @@ public class FileUtils{
 				nametagViewers.add((String) nametagViewer);
 			}
 			plugin.setNametagViewers(nametagViewers);
+			Server.getInstance().getLevels().values().forEach(FileUtils::loadData);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

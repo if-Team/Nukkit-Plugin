@@ -16,7 +16,7 @@ public class BlockTouchListener implements Listener{
 		if(event.getAction() == PlayerInteractEvent.RIGHT_CLICK_BLOCK){
 			TouchTask touchTask = ItemDisplay.getInstance().getTouchTask(event.getPlayer());
 			if(touchTask instanceof AddTouchTask){
-				((AddTouchTask) touchTask).onTouch(event.getBlock().getSide(event.getFace()));
+				((AddTouchTask) touchTask).onTouch(event.getBlock(), event.getFace());
 				event.setCancelled();
 			}
 		}
