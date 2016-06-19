@@ -69,18 +69,18 @@ public class FileUtils{
 			}
 			JSONObject jsonSubCommandSetting = (JSONObject) new JSONParser().parse(FileUtils.getResource("command/SubCommandSetting.json"));
 			HashMap<String, SubCommandData> subCommands = new HashMap<String, SubCommandData>();
-			new HashMap<String, String>(){
+			new ArrayList<String>(){
 				{
-					put("add", "Add");
-					put("remove", "Remove");
-					put("cancel", "Cancel");
-					put("view", "View");
-					put("list", "List");
-					put("reload", "Reload");
-					put("save", "Save");
-					put("reset", "Reset");
+					add("add");
+					add("remove");
+					add("cancel");
+					add("view");
+					add("list");
+					add("reload");
+					add("save");
+					add("reset");
 				}
-			}.forEach((subCommandName, defualtCommand)->{
+			}.forEach(subCommandName->{
 				JSONObject jsonSubCommandData = (JSONObject) jsonSubCommandSetting.get(subCommandName);
 				String subCommand = (String) jsonSubCommandData.get("Command");
 				JSONArray jsonSubCommandAliases = (JSONArray) jsonSubCommandData.get("Aliases");
