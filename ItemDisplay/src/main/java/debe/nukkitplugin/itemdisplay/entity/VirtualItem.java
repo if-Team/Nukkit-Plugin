@@ -12,6 +12,7 @@ import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.data.StringEntityData;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.network.protocol.AddItemEntityPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
@@ -20,7 +21,7 @@ import debe.nukkitplugin.itemdisplay.ItemDisplay;
 import debe.nukkitplugin.itemdisplay.utils.Translation;
 import debe.nukkitplugin.itemdisplay.utils.Utils;
 
-public class VirtualItem{
+public class VirtualItem extends Vector3{
 	protected Map<Integer, Player> viewers = new HashMap<Integer, Player>();
 	protected String name;
 	protected Item item;
@@ -69,11 +70,9 @@ public class VirtualItem{
 	}
 
 	public VirtualItem(String name, Item item, double x, double y, double z, String levelName){
+		super(x, y, z);
 		this.name = name;
 		this.item = item;
-		this.x = x;
-		this.y = y;
-		this.z = z;
 		this.levelName = levelName;
 		this.id = Entity.entityCount++;
 		this.riderId = Entity.entityCount++;
