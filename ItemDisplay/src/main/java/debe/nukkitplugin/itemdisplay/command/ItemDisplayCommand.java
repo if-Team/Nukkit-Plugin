@@ -70,7 +70,7 @@ public class ItemDisplayCommand extends Command{
 			@Override
 			public void execute(Player player, String[] args){
 				String itemName = args[0].toLowerCase();
-				if(plugin.exsisVirtualItem(itemName)){
+				if(plugin.existsVirtualItem(itemName)){
 					player.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.add.failed.alreadyExists", args[0]));
 				}else{
 					Item item = args[1].equals("*") ? player.getInventory().getItemInHand() : Item.fromString(args[1]);
@@ -90,7 +90,7 @@ public class ItemDisplayCommand extends Command{
 			@Override
 			public void execute(CommandSender sender, String[] args){
 				String itemName = args[0].toLowerCase();
-				if(!plugin.exsisVirtualItem(itemName)){
+				if(!plugin.existsVirtualItem(itemName)){
 					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.remove.failed.notFound", args[0]));
 				}else{
 					plugin.removeVirtualItem(itemName);
@@ -121,7 +121,7 @@ public class ItemDisplayCommand extends Command{
 				}
 			}
 		});
-		this.registerSubCommand(new SubCommand(this, subCommands.get("list"), "itemdisplay.command.itemdisplay.span", Translation.translate("commands.list.usage"), 0){
+		this.registerSubCommand(new SubCommand(this, subCommands.get("list"), "itemdisplay.command.itemdisplay.list", Translation.translate("commands.list.usage"), 0){
 			@Override
 			public void execute(CommandSender sender, String[] args){
 				ArrayList<VirtualItem> virtualItems = new ArrayList<VirtualItem>(plugin.getVirtualItems().values());
