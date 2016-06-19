@@ -118,7 +118,7 @@ public class ItemDisplay extends PluginBase{
 		}
 	}
 
-	public boolean exsisVirtualItem(String name){
+	public boolean existsVirtualItem(String name){
 		return this.virtualItems.containsKey(name);
 	}
 
