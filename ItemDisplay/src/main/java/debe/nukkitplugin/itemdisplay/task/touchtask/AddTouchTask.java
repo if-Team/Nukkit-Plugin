@@ -1,15 +1,14 @@
 package debe.nukkitplugin.itemdisplay.task.touchtask;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.Position;
 import debe.nukkitplugin.itemdisplay.ItemDisplay;
 import debe.nukkitplugin.itemdisplay.utils.Translation;
 
 public class AddTouchTask extends TouchTask{
 	protected String name;
 	protected Item item;
-	protected Position position;
 
 	public AddTouchTask(Player player, String name, Item item){
 		super(player);
@@ -21,15 +20,10 @@ public class AddTouchTask extends TouchTask{
 		return this.item;
 	}
 
-	public AddTouchTask setPosition(Position position){
-		this.position = position;
-		return this;
-	}
-
 	@Override
-	public void onRun(){
-		ItemDisplay.getInstance().addImaginaryItem(this.name, this.item, this.position);
-		this.player.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("touchTask.add.success", new String[]{this.name, String.valueOf(this.item.getId()), String.valueOf(this.item.getDamage()), String.valueOf(this.position.x), String.valueOf(this.position.y), String.valueOf(this.position.z), this.position.level.getName()}));
-		super.onRun();
+	public void onTouch(Block block){
+		ItemDisplay.getInstance().addVirtualItem(this.name, this.item, block);
+		this.player.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("touchTask.add.success", new String[]{this.name, String.valueOf(this.item.getId()), String.valueOf(this.item.getDamage()), String.valueOf(block.x), String.valueOf(block.y), String.valueOf(block.z), block.level.getFolderName()}));
+		super.onTouch(block);
 	}
 }

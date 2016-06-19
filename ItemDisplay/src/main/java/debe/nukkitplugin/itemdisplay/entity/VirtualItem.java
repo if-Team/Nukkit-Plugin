@@ -5,31 +5,76 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.entity.data.StringEntityData;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.Level;
-import cn.nukkit.level.Position;
+import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.network.protocol.AddItemEntityPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
 import cn.nukkit.network.protocol.SetEntityLinkPacket;
 import debe.nukkitplugin.itemdisplay.ItemDisplay;
 import debe.nukkitplugin.itemdisplay.utils.Translation;
+import debe.nukkitplugin.itemdisplay.utils.Utils;
 
-public class ImaginaryItem extends Position{
+public class VirtualItem{
 	protected Map<Integer, Player> viewers = new HashMap<Integer, Player>();
 	protected String name;
 	protected Item item;
 	protected long id;
 	protected long riderId;
+	public double x;
+	public double y;
+	public double z;
+	public String levelName;
 
-	public ImaginaryItem(String name, Item item, double x, double y, double z, Level level){
-		super(x, y, z, level);
+	public static VirtualItem fromString(String name, String levelName, String data){
+		String[] params = data.split(":");
+		if(params.length == 6){
+			Item item = Item.get(Utils.toInt(params[0]), Utils.toInt(params[1]));
+			if(Utils.toBoolean(params[2])){
+				item.addEnchantment(Enchantment.get(Enchantment.ID_DURABILITY));
+			}
+			return new VirtualItem(name, item, Utils.toDouble(params[3]), Utils.toDouble(params[4]), Utils.toDouble(params[5]), levelName);
+		}
+		return null;
+	}
+
+	public static void spawnAllTo(Player player){
+		ItemDisplay.getInstance().getVirtualItems().values().forEach(virtualItem->virtualItem.spawnTo(player));
+	}
+
+	public static void spawnAllToAll(){
+		Server.getInstance().getOnlinePlayers().values().forEach(VirtualItem::spawnAllTo);
+	}
+
+	public static void despawnAllFrom(Player player){
+		ItemDisplay.getInstance().getVirtualItems().values().forEach(virtualItem->virtualItem.despawnFrom(player));
+	}
+
+	public static void despawnAllFromAll(){
+		Server.getInstance().getOnlinePlayers().values().forEach(VirtualItem::despawnAllFrom);
+	}
+
+	public static void respawnAllTo(Player player){
+		VirtualItem.despawnAllFrom(player);
+		VirtualItem.spawnAllTo(player);
+	}
+
+	public static void respawnAllToAll(){
+		Server.getInstance().getOnlinePlayers().values().forEach(VirtualItem::respawnAllTo);
+	}
+
+	public VirtualItem(String name, Item item, double x, double y, double z, String levelName){
 		this.setName(name);
 		this.setItem(item);
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.levelName = levelName;
 		this.id = Entity.entityCount++;
 		this.riderId = Entity.entityCount++;
 	}
@@ -38,8 +83,8 @@ public class ImaginaryItem extends Position{
 		return new ArrayList<Player>(this.viewers.values());
 	}
 
-	public boolean canSpawn(Player player){
-		return this.level.equals(player.level) && player.usedChunks.containsKey(Level.chunkHash((int) this.x >> 4, (int) this.z >> 4));
+	public boolean canSee(Player player){
+		return this.levelName.equals(player.level.getFolderName());
 	}
 
 	public boolean isSpawned(Player player){
@@ -54,7 +99,7 @@ public class ImaginaryItem extends Position{
 	}
 
 	public void spawnTo(Player player){
-		if(!this.isSpawned(player) && this.canSpawn(player)){
+		if(!this.isSpawned(player) && this.canSee(player)){
 			this.viewers.put(player.getLoaderId(), player);
 			AddItemEntityPacket addItemEntityPk = new AddItemEntityPacket();
 			addItemEntityPk.eid = this.id;
@@ -91,6 +136,10 @@ public class ImaginaryItem extends Position{
 		}
 	}
 
+	public void spawnToAll(){
+		Server.getInstance().getOnlinePlayers().values().forEach(this::spawnTo);
+	}
+
 	public void despawnFrom(Player player){
 		if(this.isSpawned(player)){
 			this.viewers.remove(player.getLoaderId());
@@ -107,13 +156,13 @@ public class ImaginaryItem extends Position{
 		this.viewers.values().forEach(this::despawnFrom);
 	}
 
-	public void respawnFrom(Player player){
+	public void respawnTo(Player player){
 		this.despawnFrom(player);
 		this.spawnTo(player);
 	}
 
 	public void respawnFromAll(){
-		this.viewers.values().forEach(this::respawnFrom);
+		this.viewers.values().forEach(this::respawnTo);
 	}
 
 	public String getName(){
@@ -130,5 +179,10 @@ public class ImaginaryItem extends Position{
 
 	public void setItem(Item item){
 		this.item = item;
+	}
+
+	@Override
+	public String toString(){
+		return String.join(":", String.valueOf(this.item.getId()), String.valueOf(this.item.getDamage()), String.valueOf(this.item.hasEnchantments()), String.valueOf(this.x), String.valueOf(this.y), String.valueOf(this.z));
 	}
 }

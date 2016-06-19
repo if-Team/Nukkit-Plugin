@@ -1,6 +1,6 @@
 name: ItemDisplay
 authors: [DeBe, if-Team]
-version: 1.0.0
+version: 1.0.1
 main: debe.nukkitplugin.itemdisplay.ItemDisplay
 api: [1.0.0]
 website: "https://github.com/if-Team/Nukkit-Plugins/tree/master/ItemDisplay"

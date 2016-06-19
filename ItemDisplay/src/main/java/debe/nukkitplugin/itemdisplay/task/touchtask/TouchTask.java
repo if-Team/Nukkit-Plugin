@@ -1,6 +1,7 @@
 package debe.nukkitplugin.itemdisplay.task.touchtask;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import debe.nukkitplugin.itemdisplay.ItemDisplay;
 
 public abstract class TouchTask{
@@ -14,7 +15,7 @@ public abstract class TouchTask{
 		return this.player;
 	}
 
-	public void onRun(){
+	public void onTouch(Block block){
 		ItemDisplay.getInstance().removeTouchTask(this);
 	}
 }

@@ -4,28 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import cn.nukkit.Player;
-import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.EventPriority;
-import cn.nukkit.event.Listener;
-import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.event.player.PlayerQuitEvent;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
-import debe.nukkitplugin.itemdisplay.entity.ImaginaryItem;
+import debe.nukkitplugin.itemdisplay.entity.VirtualItem;
+import debe.nukkitplugin.itemdisplay.listener.BlockTouchListener;
+import debe.nukkitplugin.itemdisplay.listener.LevelLoadListener;
+import debe.nukkitplugin.itemdisplay.listener.PlayerJoinQuitListener;
 import debe.nukkitplugin.itemdisplay.listener.SaveCommandListener;
-import debe.nukkitplugin.itemdisplay.task.ItemDisplayTask;
-import debe.nukkitplugin.itemdisplay.task.touchtask.AddTouchTask;
 import debe.nukkitplugin.itemdisplay.task.touchtask.TouchTask;
 import debe.nukkitplugin.itemdisplay.utils.FileUtils;
-import debe.nukkitplugin.itemdisplay.utils.Utils;
 
 public class ItemDisplay extends PluginBase{
 	private static ItemDisplay instance;
 	private ArrayList<String> nametagViewers = new ArrayList<String>();
-	private HashMap<String, ImaginaryItem> imaginaryItems = new HashMap<String, ImaginaryItem>();
+	private HashMap<String, VirtualItem> virtualItems = new HashMap<String, VirtualItem>();
 	private HashMap<Player, TouchTask> touchTasks = new HashMap<Player, TouchTask>();
 
 	public static ItemDisplay getInstance(){
@@ -35,38 +30,24 @@ public class ItemDisplay extends PluginBase{
 	@Override
 	public void onLoad(){
 		ItemDisplay.instance = this;
+		this.loadAll();
+		this.setTouchTasks(new HashMap<Player, TouchTask>());
+		VirtualItem.spawnAllToAll();
 	}
 
 	@Override
 	public void onEnable(){
-		this.loadAll();
-		this.setTouchTasks(new HashMap<Player, TouchTask>());
+		Server.getInstance().getLevels().values().forEach(FileUtils::loadData);
+		this.getServer().getPluginManager().registerEvents(new BlockTouchListener(), this);
+		this.getServer().getPluginManager().registerEvents(new LevelLoadListener(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
 		this.getServer().getPluginManager().registerEvents(new SaveCommandListener(), this);
-		this.getServer().getPluginManager().registerEvents(new Listener(){
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerInteract(PlayerInteractEvent event){
-				if(event.getAction() == PlayerInteractEvent.RIGHT_CLICK_BLOCK){
-					TouchTask touchTask = ItemDisplay.getInstance().getTouchTask(event.getPlayer());
-					if(touchTask instanceof AddTouchTask){
-						((AddTouchTask) touchTask).setPosition(event.getBlock().getSide(event.getFace())).onRun();
-						event.setCancelled();
-					}
-				}
-			}
-
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerQuit(PlayerQuitEvent event){
-				Player player = event.getPlayer();
-				ItemDisplay.getInstance().getImaginaryItems().values().stream().filter(imaginaryItem->imaginaryItem.isSpawned(player)).forEach(imaginaryItem->imaginaryItem.despawnFrom(player));
-			}
-		}, this);
-		this.getServer().getScheduler().scheduleRepeatingTask(new ItemDisplayTask(this), 20);
 	}
 
 	@Override
 	public void onDisable(){
 		this.saveAll();
-		this.getImaginaryItems().values().forEach(ImaginaryItem::despawnFromAll);
+		VirtualItem.despawnAllFromAll();
 	}
 
 	public void loadAll(){
@@ -97,62 +78,48 @@ public class ItemDisplay extends PluginBase{
 		}.forEach(fileName->this.saveResource("defaults/" + fileName, fileName, replace));
 	}
 
-	public HashMap<String, ImaginaryItem> getImaginaryItems(){
-		return this.imaginaryItems;
+	public HashMap<String, VirtualItem> getVirtualItems(){
+		return this.virtualItems;
 	}
 
-	public void setImaginaryItems(HashMap<String, ImaginaryItem> imaginaryItems){
-		this.imaginaryItems = imaginaryItems;
+	public void setVirtualItems(HashMap<String, VirtualItem> virtualItems){
+		this.virtualItems = virtualItems;
 	}
 
-	public ImaginaryItem getImaginaryItem(String name){
-		return this.imaginaryItems.get(name);
+	public VirtualItem getVirtualItem(String name){
+		return this.virtualItems.get(name);
 	}
 
-	public void addImaginaryItem(String name, int itemId, int itemDamage, boolean enchanted, double x, double y, double z, Level level){
+	public void addVirtualItem(String name, int itemId, int itemDamage, boolean enchanted, double x, double y, double z, String levelName){
 		Item item = Item.get(itemId, itemDamage);
 		if(enchanted){
 			item.addEnchantment(Enchantment.get(Enchantment.ID_DURABILITY));
 		}
-		this.addImaginaryItem(name, item, new Position(x, y, z, level));
+		this.addVirtualItem(new VirtualItem(name, item, x, y, z, levelName));
 	}
 
-	public void addImaginaryItem(String name, Item item, Position position){
-		this.addImaginaryItem(new ImaginaryItem(name, item, position.x, position.y, position.z, position.level));
+	public void addVirtualItem(String name, Item item, Position position){
+		this.addVirtualItem(new VirtualItem(name, item, position.x, position.y, position.z, position.level.getFolderName()));
 	}
 
-	public void addImaginaryItem(ImaginaryItem imaginaryItem){
-		this.imaginaryItems.put(imaginaryItem.getName(), imaginaryItem);
+	public void addVirtualItem(VirtualItem virtualItem){
+		virtualItem.spawnToAll();
+		this.virtualItems.put(virtualItem.getName(), virtualItem);
 	}
 
-	public void removeImaginaryItem(ImaginaryItem imaginaryItem){
-		this.imaginaryItems.remove(imaginaryItem.getName());
+	public void removeVirtualItem(VirtualItem virtualItem){
+		this.virtualItems.remove(virtualItem.getName());
 	}
 
-	public void removeImaginaryItem(String name){
-		if(this.imaginaryItems.containsKey(name)){
-			this.imaginaryItems.get(name).despawnFromAll();
-			this.imaginaryItems.remove(name);
+	public void removeVirtualItem(String name){
+		if(this.virtualItems.containsKey(name)){
+			this.virtualItems.get(name).despawnFromAll();
+			this.virtualItems.remove(name);
 		}
 	}
 
-	public boolean exsisImaginaryItem(String name){
-		return this.imaginaryItems.containsKey(name);
-	}
-
-	public ImaginaryItem parseImaginaryItem(String name, String data){
-		String[] params = data.split(":");
-		if(params.length == 7){
-			Item item = Item.get(Utils.toInt(params[0]), Utils.toInt(params[1]));
-			if(Utils.toBoolean(params[2])){
-				item.addEnchantment(Enchantment.get(Enchantment.ID_DURABILITY));
-			}
-			Level level = this.getServer().getLevelByName(params[6]);
-			if(level instanceof Level){
-				return new ImaginaryItem(name, item, Utils.toDouble(params[3]), Utils.toDouble(params[4]), Utils.toDouble(params[5]), level);
-			}
-		}
-		return null;
+	public boolean exsisVirtualItem(String name){
+		return this.virtualItems.containsKey(name);
 	}
 
 	public ArrayList<String> getNametagViewers(){
@@ -172,7 +139,7 @@ public class ItemDisplay extends PluginBase{
 			this.nametagViewers.add(name.toLowerCase());
 			Player player = this.getServer().getPlayerExact(name);
 			if(player instanceof Player){
-				this.getImaginaryItems().values().stream().filter(imaginaryItem->imaginaryItem.isSpawned(player)).forEach(imaginaryItem->imaginaryItem.respawnFrom(player));
+				this.getVirtualItems().values().stream().filter(virtualItem->virtualItem.isSpawned(player)).forEach(virtualItem->virtualItem.respawnTo(player));
 			}
 		}
 	}
@@ -186,7 +153,7 @@ public class ItemDisplay extends PluginBase{
 			this.nametagViewers.remove(name.toLowerCase());
 			Player player = this.getServer().getPlayerExact(name);
 			if(player instanceof Player){
-				this.getImaginaryItems().values().stream().filter(imaginaryItem->imaginaryItem.isSpawned(player)).forEach(imaginaryItem->imaginaryItem.respawnFrom(player));
+				this.getVirtualItems().values().stream().filter(virtualItem->virtualItem.isSpawned(player)).forEach(virtualItem->virtualItem.respawnTo(player));
 			}
 		}
 	}

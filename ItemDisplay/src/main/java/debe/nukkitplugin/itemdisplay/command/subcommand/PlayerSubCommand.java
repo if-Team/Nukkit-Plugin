@@ -8,12 +8,12 @@ import debe.nukkitplugin.itemdisplay.utils.Translation;
 public abstract class PlayerSubCommand extends SubCommand{
 	public PlayerSubCommand(){}
 
-	public PlayerSubCommand(ItemDisplayCommand mainCommand, String name, String permission){
-		super(mainCommand, name, permission);
+	public PlayerSubCommand(ItemDisplayCommand mainCommand, SubCommandData data, String permission){
+		super(mainCommand, data, permission);
 	}
 
-	public PlayerSubCommand(ItemDisplayCommand mainCommand, String name, String permission, String usage, int needArgCount){
-		super(mainCommand, name, permission, usage, needArgCount);
+	public PlayerSubCommand(ItemDisplayCommand mainCommand, SubCommandData data, String permission, String usage, int needArgCount){
+		super(mainCommand, data, permission, usage, needArgCount);
 	}
 
 	public void run(CommandSender sender, String[] args){

@@ -1,10 +1,50 @@
 {
-  "add": "Add",
-  "remove": "Remove",
-  "cancel": "Cancel",
-  "view": "View",
-  "list": "List",
-  "reload": "Reload",
-  "save": "Save",
-  "reset": "Reset"
+  "add": {
+    "Command" : "Add",
+    "Aliases" : [
+      "A"
+    ]
+  },
+  "remove": {
+    "Command" : "Remove",
+    "Aliases" : [
+      "R",
+      "DELETE",
+      "D"
+    ]
+  },
+  "cancel": {
+    "Command" : "Cancel",
+    "Aliases" : [
+      "C",
+    ]
+  },
+  "view": {
+    "Command" : "View",
+    "Aliases" : [
+      "V",
+      "SEE",
+      "S"
+    ]
+  },
+  "list": {
+    "Command" : "List",
+    "Aliases" : [
+      "L",
+      "PAGE",
+      "P"
+    ]
+  },
+  "reload": {
+    "Command" : "Reload",
+    "Aliases" : []
+  },
+  "save": {
+    "Command" : "Save",
+    "Aliases" : []
+  },
+  "reset": {
+    "Command" : "Reset",
+    "Aliases" : []
+  }
 }

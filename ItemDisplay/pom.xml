@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>debe.nukkitplugin</groupId>
 	<artifactId>itemdisplay</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>ItemDisplay</name>
 	<description>Display item entity.</description>
 	<url>https://github.com/if-Team/Nukkit-Plugins/tree/master/ItemDisplay</url>

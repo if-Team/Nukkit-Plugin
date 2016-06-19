@@ -33,7 +33,8 @@ public class Utils{
 		try{
 			Integer.parseInt(content);
 			return true;
-		}catch(Exception e){}
-		return false;
+		}catch(Exception e){
+			return false;
+		}
 	}
 }

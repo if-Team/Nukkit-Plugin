@@ -15,7 +15,8 @@ import cn.nukkit.item.enchantment.Enchantment;
 import debe.nukkitplugin.itemdisplay.ItemDisplay;
 import debe.nukkitplugin.itemdisplay.command.subcommand.PlayerSubCommand;
 import debe.nukkitplugin.itemdisplay.command.subcommand.SubCommand;
-import debe.nukkitplugin.itemdisplay.entity.ImaginaryItem;
+import debe.nukkitplugin.itemdisplay.command.subcommand.SubCommandData;
+import debe.nukkitplugin.itemdisplay.entity.VirtualItem;
 import debe.nukkitplugin.itemdisplay.task.touchtask.AddTouchTask;
 import debe.nukkitplugin.itemdisplay.utils.Translation;
 import debe.nukkitplugin.itemdisplay.utils.Utils;
@@ -23,7 +24,7 @@ import debe.nukkitplugin.itemdisplay.utils.Utils;
 public class ItemDisplayCommand extends Command{
 	private LinkedHashMap<String, SubCommand> subCommands = new LinkedHashMap<String, SubCommand>();
 
-	public ItemDisplayCommand(String name, String[] aliases, Map<String, String> subCommands){
+	public ItemDisplayCommand(String name, String[] aliases, Map<String, SubCommandData> subCommands){
 		super(name);
 		this.setPermission("itemdisplay.command.itemdisplay");
 		this.setAliases(aliases);
@@ -61,13 +62,13 @@ public class ItemDisplayCommand extends Command{
 		return "/" + this.getLabel() + " <" + String.join(" | ", this.subCommands.values().stream().filter(subCommand->subCommand.hasPermission(sender)).map(SubCommand::getName).collect(Collectors.toList())) + ">";
 	}
 
-	public void registerSubCommands(Map<String, String> subCommands){
+	public void registerSubCommands(Map<String, SubCommandData> subCommands){
 		final ItemDisplay plugin = ItemDisplay.getInstance();
 		this.registerSubCommand(new PlayerSubCommand(this, subCommands.get("add"), "itemdisplay.command.itemdisplay.add", Translation.translate("commands.add.usage"), 2){
 			@Override
 			public void execute(Player player, String[] args){
 				String itemName = args[0].toLowerCase();
-				if(plugin.exsisImaginaryItem(itemName)){
+				if(plugin.exsisVirtualItem(itemName)){
 					player.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.add.failed.alreadyExists", args[0]));
 				}else{
 					Item item = args[1].equals("*") ? player.getInventory().getItemInHand() : Item.fromString(args[1]);
@@ -87,10 +88,10 @@ public class ItemDisplayCommand extends Command{
 			@Override
 			public void execute(CommandSender sender, String[] args){
 				String itemName = args[0].toLowerCase();
-				if(!plugin.exsisImaginaryItem(itemName)){
+				if(!plugin.exsisVirtualItem(itemName)){
 					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.remove.failed.notFound", args[0]));
 				}else{
-					plugin.removeImaginaryItem(itemName);
+					plugin.removeVirtualItem(itemName);
 					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.remove.success", itemName));
 				}
 			}
@@ -121,8 +122,8 @@ public class ItemDisplayCommand extends Command{
 		this.registerSubCommand(new SubCommand(this, subCommands.get("list"), "itemdisplay.command.itemdisplay.span", Translation.translate("commands.list.usage"), 0){
 			@Override
 			public void execute(CommandSender sender, String[] args){
-				ArrayList<ImaginaryItem> imaginaryItems = new ArrayList<ImaginaryItem>(plugin.getImaginaryItems().values());
-				int itemCount = imaginaryItems.size();
+				ArrayList<VirtualItem> virtualItems = new ArrayList<VirtualItem>(plugin.getVirtualItems().values());
+				int itemCount = virtualItems.size();
 				if(itemCount == 0){
 					sender.sendMessage(Translation.translate("colors.failed") + Translation.translate("prefix") + " " + Translation.translate("commands.list.failed.empty"));
 				}else if(args.length >= 1 && !Utils.isInt(args[0])){
@@ -132,8 +133,8 @@ public class ItemDisplayCommand extends Command{
 					int page = Math.min(args.length >= 1 ? Utils.toInt(args[0]) - 1 : 0, maxPage);
 					sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.list.success.title", new String[]{String.valueOf(page + 1), String.valueOf(maxPage + 1), String.valueOf(itemCount)}));
 					for(int index = page * 5; index < page * 5 + 5 && index < itemCount; index++){
-						ImaginaryItem imaginaryItem = imaginaryItems.get(index);
-						sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.list.success.entry", new String[]{String.valueOf(index + 1), imaginaryItem.getName(), String.valueOf(imaginaryItem.getItem().getId()) + ":" + imaginaryItem.getItem().getDamage(), String.valueOf(imaginaryItem.x), String.valueOf(imaginaryItem.y), String.valueOf(imaginaryItem.z), imaginaryItem.level.getName()}));
+						VirtualItem virtualItem = virtualItems.get(index);
+						sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.list.success.entry", new String[]{String.valueOf(index + 1), virtualItem.getName(), String.valueOf(virtualItem.getItem().getId()) + ":" + virtualItem.getItem().getDamage(), String.valueOf(virtualItem.x), String.valueOf(virtualItem.y), String.valueOf(virtualItem.z), virtualItem.levelName}));
 					}
 				}
 			}
@@ -141,9 +142,9 @@ public class ItemDisplayCommand extends Command{
 		this.registerSubCommand(new SubCommand(this, subCommands.get("reload"), "itemdisplay.command.itemdisplay.reload"){
 			@Override
 			public void execute(CommandSender sender, String[] args){
-				plugin.getImaginaryItems().values().forEach(imaginaryItem->{
-					Server.getInstance().getOnlinePlayers().values().stream().filter(player->imaginaryItem.isSpawned(player)).forEach(player->{
-						imaginaryItem.despawnFrom(player);
+				plugin.getVirtualItems().values().forEach(virtualItem->{
+					Server.getInstance().getOnlinePlayers().values().stream().filter(player->virtualItem.isSpawned(player)).forEach(player->{
+						virtualItem.despawnFrom(player);
 					});
 				});
 				plugin.loadAll();
@@ -160,7 +161,7 @@ public class ItemDisplayCommand extends Command{
 		this.registerSubCommand(new SubCommand(this, subCommands.get("reset"), "itemdisplay.command.itemdisplay.reset"){
 			@Override
 			public void execute(CommandSender sender, String[] args){
-				plugin.getImaginaryItems().values().forEach(ImaginaryItem::despawnFromAll);
+				plugin.getVirtualItems().values().forEach(VirtualItem::despawnFromAll);
 				plugin.saveDefaultData(true);
 				plugin.loadAll();
 				sender.sendMessage(Translation.translate("colors.success") + Translation.translate("prefix") + " " + Translation.translate("commands.reset.success"));
@@ -172,8 +173,13 @@ public class ItemDisplayCommand extends Command{
 		this.subCommands.put(subCommand.getName().toLowerCase(), subCommand);
 	}
 
-	public SubCommand getSubCommand(String name){
-		return this.subCommands.get(name.toLowerCase());
+	public SubCommand getSubCommand(String command){
+		for(SubCommand subCommand : this.subCommands.values()){
+			if(subCommand.getData().equals(command)){
+				return subCommand;
+			}
+		}
+		return null;
 	}
 
 	public ArrayList<SubCommand> getSubCommands(){
