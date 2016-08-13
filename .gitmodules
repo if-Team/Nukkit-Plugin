@@ -1,0 +1,3 @@
+[submodule "Nelegram"]
+	path = Nelegram
+	url = https://github.com/ChalkPE/Nelegram.git
