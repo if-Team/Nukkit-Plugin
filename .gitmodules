@@ -16,3 +16,6 @@
 [submodule "CallHighlighter"]
 	path = CallHighlighter
 	url = https://github.com/onebone/CallHighlighter
+[submodule "PrefixShop"]
+	path = PrefixShop
+	url = https://github.com/if-Team/PrefixShop
