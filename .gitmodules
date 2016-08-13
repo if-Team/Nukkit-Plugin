@@ -7,3 +7,12 @@
 [submodule "Kami"]
 	path = Kami
 	url = https://github.com/onebone/Kami
+[submodule "Rino"]
+	path = Rino
+	url = https://github.com/onebone/Rino
+[submodule "ChatFormatter"]
+	path = ChatFormatter
+	url = https://github.com/onebone/ChatFormatter
+[submodule "CallHighlighter"]
+	path = CallHighlighter
+	url = https://github.com/onebone/CallHighlighter
