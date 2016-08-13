@@ -4,3 +4,6 @@
 [submodule "GateKeeper"]
 	path = GateKeeper
 	url = https://github.com/onebone/GateKeeper
+[submodule "Kami"]
+	path = Kami
+	url = https://github.com/onebone/Kami
