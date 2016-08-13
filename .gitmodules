@@ -1,3 +1,6 @@
 [submodule "Nelegram"]
 	path = Nelegram
 	url = https://github.com/ChalkPE/Nelegram.git
+[submodule "GateKeeper"]
+	path = GateKeeper
+	url = https://github.com/onebone/GateKeeper
