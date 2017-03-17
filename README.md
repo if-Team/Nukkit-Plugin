@@ -3,7 +3,7 @@
 ![Logo](http://i.imgur.com/lR2AHL7.png)
 
 ```
-Copyright (C) 2016  if(Team);
+Copyright (C) 2017  if(Team);
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
